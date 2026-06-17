@@ -1,0 +1,789 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+    <title>Family · Nur Ain Qistina</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,700&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Lato', 'Segoe UI', sans-serif;
+            background: #faf3e0;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem 1.5rem;
+            background: linear-gradient(145deg, #f8efe0 0%, #eaddca 100%);
+        }
+
+        .family-card {
+            max-width: 1200px;
+            width: 100%;
+            background: rgba(255, 250, 240, 0.88);
+            backdrop-filter: blur(2px);
+            border-radius: 48px;
+            box-shadow: 0 25px 45px -12px rgba(80, 50, 20, 0.25),
+                        inset 0 1px 2px rgba(255, 245, 215, 0.6);
+            padding: 2.8rem 3rem;
+            border: 1px solid #eedbc0;
+            position: relative;
+            opacity: 0;
+            transform: translateY(40px);
+            animation: fadeInUp 0.8s ease forwards;
+        }
+
+        @keyframes fadeInUp {
+            0% {
+                opacity: 0;
+                transform: translateY(40px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .top-actions,
+        .header-title,
+        .family-tree {
+            opacity: 0;
+            animation: fadeInUp 0.6s ease forwards;
+        }
+
+        .top-actions { animation-delay: 0.1s; }
+        .header-title { animation-delay: 0.2s; }
+        .family-tree { animation-delay: 0.3s; }
+
+        .top-actions {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .lang-group {
+            display: flex;
+            gap: 0.8rem;
+        }
+
+        .lang-btn {
+            background: #e7dbbc;
+            border: none;
+            padding: 8px 22px;
+            border-radius: 40px;
+            font-weight: bold;
+            font-size: 0.85rem;
+            cursor: pointer;
+            color: #5a3a22;
+            transition: 0.2s;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+            font-family: 'Lato', sans-serif;
+        }
+
+        .lang-btn:hover {
+            background: #ddc89b;
+            transform: scale(0.97);
+        }
+
+        .lang-btn.active {
+            background: #c9a87c;
+            color: #fff;
+            box-shadow: 0 2px 8px rgba(100, 60, 20, 0.2);
+        }
+
+        .back-btn {
+            background: #dcc29e;
+            border: none;
+            padding: 8px 24px;
+            border-radius: 40px;
+            font-weight: bold;
+            font-size: 0.85rem;
+            cursor: pointer;
+            color: #3d2a18;
+            transition: 0.2s;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            font-family: 'Lato', sans-serif;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        }
+
+        .back-btn:hover {
+            background: #c9a87c;
+            transform: scale(0.97);
+            color: #fff;
+        }
+
+        .header-title {
+            text-align: center;
+            margin-bottom: 2.5rem;
+            border-bottom: 2px dashed #dac29e;
+            padding-bottom: 1.2rem;
+        }
+
+        .header-title h1 {
+            font-family: 'Playfair Display', serif;
+            font-weight: 700;
+            font-style: italic;
+            font-size: 2.8rem;
+            letter-spacing: 0.02em;
+            color: #4d2e1b;
+            display: inline-block;
+            padding: 0 1.5rem;
+            background: linear-gradient(to right, #f7eddc, #fdf6ea);
+            border-radius: 60px;
+            box-shadow: 0 6px 16px rgba(120, 70, 30, 0.08);
+        }
+
+        .family-tree {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 1rem 0;
+            width: 100%;
+        }
+
+        .parents-row {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 4rem;
+            margin-bottom: 0.5rem;
+            flex-wrap: wrap;
+            position: relative;
+            width: 100%;
+            padding: 0 2rem;
+        }
+
+        .parents-row::after {
+            display: none;
+        }
+
+        .parents-row::before {
+            display: none;
+        }
+
+        .parent-card {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background: rgba(255, 248, 235, 0.6);
+            border-radius: 28px;
+            padding: 1.5rem 2rem;
+            border: 2px solid #e9d5b5;
+            transition: 0.3s ease;
+            min-width: 200px;
+            position: relative;
+            z-index: 3;
+            background: rgba(255, 248, 235, 0.85);
+            flex: 0 1 auto;
+        }
+
+        .parent-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 12px 28px rgba(100, 60, 20, 0.15);
+            border-color: #c9a87c;
+        }
+
+        .parent-card .avatar {
+            width: 140px;
+            height: 140px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 5px solid #eedcc0;
+            box-shadow: 0 6px 18px rgba(0,0,0,0.1);
+            margin-bottom: 0.8rem;
+            background: #dcc9ae;
+        }
+
+        .parent-card .name {
+            font-weight: 700;
+            font-size: 1.2rem;
+            color: #4d2e1b;
+            text-align: center;
+        }
+
+        .parent-card .role {
+            font-size: 0.9rem;
+            color: #8a6e4a;
+            font-weight: 400;
+        }
+
+        .children-row {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 2.5rem;
+            flex-wrap: wrap;
+            margin-top: 2.5rem;
+            position: relative;
+            width: 100%;
+            padding: 0 1rem;
+        }
+
+        .children-row::before {
+            display: none;
+        }
+
+        .child-card {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background: rgba(255, 248, 235, 0.5);
+            border-radius: 24px;
+            padding: 1.5rem 1.8rem;
+            border: 2px solid #e9d5b5;
+            transition: 0.3s ease;
+            min-width: 160px;
+            position: relative;
+            background: rgba(255, 248, 235, 0.7);
+            z-index: 1;
+        }
+
+        .child-card::before {
+            display: none;
+        }
+
+        .child-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 12px 28px rgba(100, 60, 20, 0.12);
+            border-color: #c9a87c;
+            background: rgba(255, 248, 235, 0.9);
+        }
+
+        .child-card .avatar {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 5px solid #eedcc0;
+            box-shadow: 0 6px 18px rgba(0,0,0,0.1);
+            margin-bottom: 0.8rem;
+            background: #dcc9ae;
+        }
+
+        .child-card .name {
+            font-weight: 700;
+            font-size: 1.1rem;
+            color: #4d2e1b;
+            text-align: center;
+        }
+
+        .child-card .role {
+            font-size: 0.85rem;
+            color: #8a6e4a;
+            font-weight: 400;
+        }
+
+        .child-card.highlight {
+            border-color: #bf9a6a;
+            background: rgba(255, 235, 200, 0.7);
+            box-shadow: 0 4px 20px rgba(180, 130, 70, 0.25);
+        }
+
+        .child-card.highlight::after {
+            content: '⭐';
+            position: absolute;
+            top: -14px;
+            right: -10px;
+            font-size: 1.6rem;
+            z-index: 2;
+        }
+
+        .video-section {
+            margin-top: 3.5rem;
+            width: 100%;
+            max-width: 820px;
+            margin-left: auto;
+            margin-right: auto;
+            border-radius: 32px;
+            background: rgba(255, 248, 235, 0.5);
+            border: 2px solid #e9d5b5;
+            padding: 1.2rem 1.2rem 1.8rem;
+            box-shadow: 0 6px 20px rgba(100, 60, 20, 0.08);
+            transition: 0.3s;
+        }
+
+        .video-section:hover {
+            border-color: #c9a87c;
+            background: rgba(255, 248, 235, 0.8);
+        }
+
+        .video-wrapper {
+            position: relative;
+            width: 100%;
+            padding-bottom: 56.25%;
+            height: 0;
+            border-radius: 24px;
+            overflow: hidden;
+            background: #dcc9ae;
+            box-shadow: inset 0 0 0 2px #eedcc0;
+        }
+
+        .video-wrapper video,
+        .video-wrapper iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: none;
+            border-radius: 24px;
+            object-fit: cover;
+            background: #d4c0a4;
+        }
+
+        .video-caption {
+            margin-top: 1.2rem;
+            text-align: justify;
+            font-weight: 400;
+            color: #3d2a18;
+            font-size: 1.05rem;
+            line-height: 1.8;
+            background: rgba(255, 248, 235, 0.6);
+            padding: 1.8rem 2.2rem;
+            border-radius: 24px;
+            border: 1px solid #e2cfb2;
+            backdrop-filter: blur(2px);
+            transition: 0.3s;
+        }
+
+        .video-caption:hover {
+            background: rgba(255, 248, 235, 0.85);
+            border-color: #c9a87c;
+        }
+
+        .video-caption .caption-icon {
+            display: block;
+            text-align: center;
+            font-size: 1.1rem;
+            margin-bottom: 0.8rem;
+            font-weight: 700;
+            color: #4d2e1b;
+        }
+
+        .video-caption b,
+        .video-caption strong {
+            font-weight: 700;
+            color: #4d2e1b;
+        }
+
+        .video-caption i,
+        .video-caption em {
+            font-style: italic;
+            color: #6b4f32;
+        }
+
+        .video-caption .highlight-text {
+            background: linear-gradient(to right, #f7eddc, #fdf6ea);
+            padding: 0.1rem 0.4rem;
+            border-radius: 6px;
+        }
+
+        /* ===== FOOTER with clock & date ===== */
+        .family-footer {
+            margin-top: 2.5rem;
+            text-align: center;
+            font-size: 0.75rem;
+            color: #b09573;
+            letter-spacing: 1px;
+            border-top: 1px solid #e2cfb2;
+            padding-top: 1.2rem;
+            opacity: 0;
+            animation: fadeInUp 0.6s ease 0.5s forwards;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.6rem;
+        }
+
+        .clock-date {
+            display: flex;
+            justify-content: center;
+            gap: 1.8rem;
+            flex-wrap: wrap;
+            font-weight: 400;
+            font-size: 0.9rem;
+            letter-spacing: 0.4px;
+            color: #5a3f28;
+            background: #f7ecd9;
+            padding: 0.45rem 1.8rem;
+            border-radius: 60px;
+            border: 1px solid #e6d3b5;
+            box-shadow: inset 0 1px 6px rgba(0,0,0,0.04);
+        }
+
+        .clock-date span {
+            padding: 0 4px;
+        }
+
+        .clock-date .separator {
+            opacity: 0.3;
+        }
+
+        @media (max-width: 850px) {
+            .parents-row {
+                gap: 2rem;
+                padding: 0 1rem;
+            }
+            .parent-card {
+                min-width: 160px;
+                padding: 1.2rem 1.5rem;
+            }
+            .parent-card .avatar {
+                width: 110px;
+                height: 110px;
+            }
+            .children-row {
+                gap: 1.8rem;
+            }
+            .child-card {
+                min-width: 130px;
+                padding: 1rem 1.2rem;
+            }
+            .child-card .avatar {
+                width: 100px;
+                height: 100px;
+            }
+            .video-section {
+                max-width: 100%;
+            }
+            .video-caption {
+                padding: 1.4rem 1.6rem;
+                font-size: 0.98rem;
+            }
+            .clock-date {
+                font-size: 0.75rem;
+                padding: 0.35rem 1rem;
+                gap: 0.6rem;
+                flex-wrap: wrap;
+            }
+        }
+
+        @media (max-width: 650px) {
+            .family-card {
+                padding: 1.8rem 1.2rem;
+            }
+            .header-title h1 {
+                font-size: 2rem;
+                padding: 0 1rem;
+            }
+            .top-actions {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            .lang-group {
+                justify-content: center;
+            }
+            .back-btn {
+                justify-content: center;
+            }
+            .parents-row {
+                flex-direction: column;
+                align-items: center;
+                gap: 1.5rem;
+                padding: 0;
+            }
+            .children-row {
+                flex-direction: column;
+                align-items: center;
+                gap: 1.5rem;
+                padding: 0;
+            }
+            .parent-card {
+                width: 100%;
+                max-width: 280px;
+            }
+            .child-card {
+                width: 100%;
+                max-width: 240px;
+            }
+            .parent-card .avatar {
+                width: 120px;
+                height: 120px;
+            }
+            .child-card .avatar {
+                width: 110px;
+                height: 110px;
+            }
+            .video-caption {
+                padding: 1.2rem 1rem;
+                font-size: 0.92rem;
+                line-height: 1.7;
+            }
+            .clock-date {
+                font-size: 0.75rem;
+                padding: 0.35rem 1rem;
+                gap: 0.6rem;
+                flex-wrap: wrap;
+            }
+        }
+
+        @media (max-width: 400px) {
+            .family-card {
+                padding: 1.2rem 0.8rem;
+                border-radius: 32px;
+            }
+            .header-title h1 {
+                font-size: 1.6rem;
+            }
+            .parent-card .avatar {
+                width: 100px;
+                height: 100px;
+            }
+            .child-card .avatar {
+                width: 90px;
+                height: 90px;
+            }
+            .video-caption {
+                padding: 1rem 0.8rem;
+                font-size: 0.85rem;
+            }
+            .clock-date {
+                font-size: 0.7rem;
+                padding: 0.3rem 0.8rem;
+            }
+        }
+
+        .family-card {
+            position: relative;
+        }
+        .family-card::after {
+            content: '';
+            position: absolute;
+            inset: -2px;
+            border-radius: 50px;
+            background: linear-gradient(130deg, #dbbd94, #f2e0c0, #dbbd94);
+            z-index: -1;
+            opacity: 0.5;
+            filter: blur(4px);
+        }
+    </style>
+</head>
+<body>
+
+<div class="family-card">
+    <!-- TOP ROW -->
+    <div class="top-actions">
+        <div class="lang-group">
+            <button class="lang-btn active" id="langEngBtn">ENGLISH</button>
+            <button class="lang-btn" id="langBmBtn">BAHASA MELAYU</button>
+        </div>
+        <a href="index.html" class="back-btn" id="backHome" data-en="🏠 BACK TO HOMEPAGE" data-bm="🏠 KEMBALI KE LAMAN UTAMA">🏠 BACK TO HOMEPAGE</a>
+    </div>
+
+    <!-- HEADER -->
+    <div class="header-title">
+        <h1 id="titleFamily" data-en="👨‍👩‍👧‍👦 MY FAMILY" data-bm="👨‍👩‍👧‍👦 KELUARGA SAYA">👨‍👩‍👧‍👦 MY FAMILY</h1>
+    </div>
+
+    <!-- ===== FAMILY TREE ===== -->
+    <div class="family-tree">
+        <!-- Parents Row -->
+        <div class="parents-row">
+            <!-- Father -->
+            <div class="parent-card">
+                <img src="abah.jpeg" alt="Zulafian Bin Mohamed" class="avatar" id="fatherImg" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22140%22 height=%22140%22%3E%3Crect width=%22140%22 height=%22140%22 fill=%22%23dcc9ae%22/%3E%3Ccircle cx=%2270%22 cy=%2255%22 r=%2235%22 fill=%22%23b58d62%22/%3E%3Ccircle cx=%2255%22 cy=%2248%22 r=%226%22 fill=%22%233d2a18%22/%3E%3Ccircle cx=%2285%22 cy=%2248%22 r=%226%22 fill=%22%233d2a18%22/%3E%3Cpath d=%22M50 75 Q70 95 90 75%22 stroke=%22%233d2a18%22 stroke-width=%224%22 fill=%22none%22/%3E%3C/svg%3E'">
+                <span class="name" id="fatherName" data-en="Zulafian Bin Mohamed" data-bm="Zulafian Bin Mohamed">Zulafian Bin Mohamed</span>
+                <span class="role" id="fatherRole" data-en="👨 Father" data-bm="👨 Bapa">👨 Father</span>
+            </div>
+
+            <!-- Mother -->
+            <div class="parent-card">
+                <img src="mama.jpeg" alt="Khalijah Binti Selamat" class="avatar" id="motherImg" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22140%22 height=%22140%22%3E%3Crect width=%22140%22 height=%22140%22 fill=%22%23dcc9ae%22/%3E%3Ccircle cx=%2270%22 cy=%2255%22 r=%2235%22 fill=%22%23b58d62%22/%3E%3Ccircle cx=%2255%22 cy=%2248%22 r=%226%22 fill=%22%233d2a18%22/%3E%3Ccircle cx=%2285%22 cy=%2248%22 r=%226%22 fill=%22%233d2a18%22/%3E%3Cpath d=%22M50 75 Q70 95 90 75%22 stroke=%22%233d2a18%22 stroke-width=%224%22 fill=%22none%22/%3E%3C/svg%3E'">
+                <span class="name" id="motherName" data-en="Khalijah Binti Selamat" data-bm="Khalijah Binti Selamat">Khalijah Binti Selamat</span>
+                <span class="role" id="motherRole" data-en="👩 Mother" data-bm="👩 Ibu">👩 Mother</span>
+            </div>
+        </div>
+
+        <!-- Children Row -->
+        <div class="children-row">
+            <!-- Sister -->
+            <div class="child-card">
+                <img src="aliesya.jpeg" alt="Nur Aliesya Binti Zulafian" class="avatar" id="sisterImg" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22120%22 height=%22120%22%3E%3Crect width=%22120%22 height=%22120%22 fill=%22%23dcc9ae%22/%3E%3Ccircle cx=%2260%22 cy=%2248%22 r=%2230%22 fill=%22%23b58d62%22/%3E%3Ccircle cx=%2246%22 cy=%2242%22 r=%225%22 fill=%22%233d2a18%22/%3E%3Ccircle cx=%2274%22 cy=%2242%22 r=%225%22 fill=%22%233d2a18%22/%3E%3Cpath d=%22M42 68 Q60 85 78 68%22 stroke=%22%233d2a18%22 stroke-width=%223%22 fill=%22none%22/%3E%3C/svg%3E'">
+                <span class="name" id="sisterName" data-en="Nur Aliesya Binti Zulafian" data-bm="Nur Aliesya Binti Zulafian">Nur Aliesya Binti Zulafian</span>
+                <span class="role" id="sisterRole" data-en="👧 Sister" data-bm="👧 Kakak">👧 Sister</span>
+            </div>
+
+            <!-- Me (Highlighted) -->
+            <div class="child-card highlight">
+                <img src="ain.jpeg" alt="Nur Ain Qistina Binti Zulafian" class="avatar" id="meImg" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22120%22 height=%22120%22%3E%3Crect width=%22120%22 height=%22120%22 fill=%22%23dcc9ae%22/%3E%3Ccircle cx=%2260%22 cy=%2248%22 r=%2230%22 fill=%22%23b58d62%22/%3E%3Ccircle cx=%2246%22 cy=%2242%22 r=%225%22 fill=%22%233d2a18%22/%3E%3Ccircle cx=%2274%22 cy=%2242%22 r=%225%22 fill=%22%233d2a18%22/%3E%3Cpath d=%22M42 68 Q60 85 78 68%22 stroke=%22%233d2a18%22 stroke-width=%223%22 fill=%22none%22/%3E%3C/svg%3E'">
+                <span class="name" id="meName" data-en="Nur Ain Qistina Binti Zulafian" data-bm="Nur Ain Qistina Binti Zulafian">Nur Ain Qistina Binti Zulafian</span>
+                <span class="role" id="meRole" data-en="👩 Me" data-bm="👩 Saya">👩 Me</span>
+            </div>
+
+            <!-- Brother -->
+            <div class="child-card">
+                <img src="adney.jpeg" alt="Muhammad Adney Rayyan Bin Zulafian" class="avatar" id="brotherImg" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22120%22 height=%22120%22%3E%3Crect width=%22120%22 height=%22120%22 fill=%22%23dcc9ae%22/%3E%3Ccircle cx=%2260%22 cy=%2248%22 r=%2230%22 fill=%22%23b58d62%22/%3E%3Ccircle cx=%2246%22 cy=%2242%22 r=%225%22 fill=%22%233d2a18%22/%3E%3Ccircle cx=%2274%22 cy=%2242%22 r=%225%22 fill=%22%233d2a18%22/%3E%3Cpath d=%22M42 68 Q60 85 78 68%22 stroke=%22%233d2a18%22 stroke-width=%223%22 fill=%22none%22/%3E%3C/svg%3E'">
+                <span class="name" id="brotherName" data-en="Muhammad Adney Rayyan Bin Zulafian" data-bm="Muhammad Adney Rayyan Bin Zulafian">Muhammad Adney Rayyan Bin Zulafian</span>
+                <span class="role" id="brotherRole" data-en="👦 Brother" data-bm="👦 Adik">👦 Brother</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===== VIDEO + CAPTION / ESSAY ===== -->
+    <div class="video-section">
+        <div class="video-wrapper">
+            <video controls autoplay muted loop>
+                <source src="family video.MOV" type="video/quicktime">
+                <source src="family video.MOV" type="video/mp4">
+                Your browser does not support the video tag.
+            </video>
+        </div>
+
+        <!-- Caption / Essay Box -->
+        <div class="video-caption" id="videoCaption">
+            <span class="caption-icon">📹 Our Family Moments</span>
+            <b>Family</b> moments are like sugar in life sweet and full of energy. 
+            Every second spent together, whether it's enjoying an evening meal at the dining table, 
+            chatting in the living room, or simply watching television side by side, feels 
+            <i>incredibly precious</i> and leaves behind memories firmly etched in the heart. 
+            The laughter of siblings, a father's wise advice, and a mother's soothing smile 
+            all blend together into a <b>harmonious symphony</b> that forms a fortress of love. 
+            In the hustle and bustle of this fast-paced world, <b>family</b> is where we return 
+            to find shelter and recharge our spirits, because here we are always welcomed 
+            with open arms, <b>expecting nothing in return</b>.
+        </div>
+    </div>
+
+    <!-- FOOTER with clock & date -->
+    <div class="family-footer">
+        <span id="footerText" data-en="✦ family · digital cv ✦" data-bm="✦ keluarga · cv digital ✦">✦ family · digital cv ✦</span>
+        <div class="clock-date" id="clockDateDisplay">
+            <span id="clockTime">--:--:--</span>
+            <span class="separator">|</span>
+            <span id="clockDay">---</span>
+            <span class="separator">|</span>
+            <span id="clockDate">-- --- ----</span>
+        </div>
+    </div>
+</div>
+
+<script>
+    // ===== LANGUAGE SWITCHING =====
+    const langEngBtn = document.getElementById('langEngBtn');
+    const langBmBtn = document.getElementById('langBmBtn');
+    const translatableElements = document.querySelectorAll('[data-en][data-bm]');
+
+    // Store ALL translatable content in data attributes
+    document.getElementById('titleFamily').setAttribute('data-en', '👨‍👩‍👧‍👦 MY FAMILY');
+    document.getElementById('titleFamily').setAttribute('data-bm', '👨‍👩‍👧‍👦 KELUARGA SAYA');
+
+    document.getElementById('fatherName').setAttribute('data-en', 'Zulafian Bin Mohamed');
+    document.getElementById('fatherName').setAttribute('data-bm', 'Zulafian Bin Mohamed');
+    document.getElementById('fatherRole').setAttribute('data-en', '👨 Father');
+    document.getElementById('fatherRole').setAttribute('data-bm', '👨 Bapa');
+
+    document.getElementById('motherName').setAttribute('data-en', 'Khalijah Binti Selamat');
+    document.getElementById('motherName').setAttribute('data-bm', 'Khalijah Binti Selamat');
+    document.getElementById('motherRole').setAttribute('data-en', '👩 Mother');
+    document.getElementById('motherRole').setAttribute('data-bm', '👩 Ibu');
+
+    document.getElementById('sisterName').setAttribute('data-en', 'Nur Aliesya Binti Zulafian');
+    document.getElementById('sisterName').setAttribute('data-bm', 'Nur Aliesya Binti Zulafian');
+    document.getElementById('sisterRole').setAttribute('data-en', '👧 Sister');
+    document.getElementById('sisterRole').setAttribute('data-bm', '👧 Kakak');
+
+    document.getElementById('meName').setAttribute('data-en', 'Nur Ain Qistina Binti Zulafian');
+    document.getElementById('meName').setAttribute('data-bm', 'Nur Ain Qistina Binti Zulafian');
+    document.getElementById('meRole').setAttribute('data-en', '👩 Me');
+    document.getElementById('meRole').setAttribute('data-bm', '👩 Saya');
+
+    document.getElementById('brotherName').setAttribute('data-en', 'Muhammad Adney Rayyan Bin Zulafian');
+    document.getElementById('brotherName').setAttribute('data-bm', 'Muhammad Adney Rayyan Bin Zulafian');
+    document.getElementById('brotherRole').setAttribute('data-en', '👦 Brother');
+    document.getElementById('brotherRole').setAttribute('data-bm', '👦 Adik');
+
+    document.getElementById('backHome').setAttribute('data-en', '🏠 BACK TO HOMEPAGE');
+    document.getElementById('backHome').setAttribute('data-bm', '🏠 KEMBALI KE LAMAN UTAMA');
+
+    const captionEl = document.getElementById('videoCaption');
+    captionEl.setAttribute('data-en', `<span class="caption-icon">📹 Our Family Moments</span>
+        <b>Family</b> moments are like sugar in life sweet and full of energy. 
+        Every second spent together, whether it's enjoying an evening meal at the dining table, 
+        chatting in the living room, or simply watching television side by side, feels 
+        <i>incredibly precious</i> and leaves behind memories firmly etched in the heart. 
+        The laughter of siblings, a father's wise advice, and a mother's soothing smile 
+        all blend together into a <b>harmonious symphony</b> that forms a fortress of love. 
+        In the hustle and bustle of this fast-paced world, <b>family</b> is where we return 
+        to find shelter and recharge our spirits, because here we are always welcomed 
+        with open arms, <b>expecting nothing in return</b>.`);
+    captionEl.setAttribute('data-bm', `<span class="caption-icon">📹 Momen Keluarga Kami</span>
+        <b>Keluarga</b> bagaikan gula dalam kehidupan manis dan penuh tenaga. 
+        Setiap saat bersama, sama ada menikmati hidangan malam di meja makan, 
+        berbual di ruang tamu, atau sekadar menonton televisyen sebelah-menyebelah, terasa 
+        <i>sangat berharga</i> dan meninggalkan kenangan yang terpahat kukuh di hati. 
+        Gelak tawa adik-beradik, nasihat bijak seorang ayah, dan senyuman menenangkan seorang ibu 
+        semuanya bergabung menjadi <b>simfoni harmoni</b> yang membentuk benteng kasih sayang. 
+        Dalam kesibukan dunia yang pantas ini, <b>keluarga</b> adalah tempat kita kembali 
+        mencari perlindungan dan mengisi semula tenaga, kerana di sini kita sentiasa dialu-alukan 
+        dengan tangan terbuka, <b>tanpa mengharapkan balasan</b>.`);
+
+    document.getElementById('footerText').setAttribute('data-en', '✦ family · digital cv ✦');
+    document.getElementById('footerText').setAttribute('data-bm', '✦ keluarga · cv digital ✦');
+
+    const allTranslatable = document.querySelectorAll('[data-en][data-bm]');
+
+    function setLanguage(lang) {
+        langEngBtn.classList.toggle('active', lang === 'en');
+        langBmBtn.classList.toggle('active', lang === 'bm');
+
+        allTranslatable.forEach(el => {
+            const text = lang === 'en' ? el.getAttribute('data-en') : el.getAttribute('data-bm');
+            if (text !== null) {
+                if (el.id === 'videoCaption' || el.id === 'footerText' || el.id === 'backHome') {
+                    el.innerHTML = text;
+                } else {
+                    el.innerText = text;
+                }
+            }
+        });
+    }
+
+    langEngBtn.addEventListener('click', () => setLanguage('en'));
+    langBmBtn.addEventListener('click', () => setLanguage('bm'));
+
+    // Default: English
+    setLanguage('en');
+
+    // ===== CLOCK + DAY + DATE =====
+    function updateClock() {
+        const now = new Date();
+        const h = String(now.getHours()).padStart(2, '0');
+        const m = String(now.getMinutes()).padStart(2, '0');
+        const s = String(now.getSeconds()).padStart(2, '0');
+        const timeStr = h + ':' + m + ':' + s;
+
+        const days = ['SUNDAY', 'MONDAY', 'TUESDAY', 'WEDNESDAY', 'THURSDAY', 'FRIDAY', 'SATURDAY'];
+        const dayStr = days[now.getDay()];
+
+        const months = ['JANUARY','FEBRUARY','MARCH','APRIL','MAY','JUNE','JULY','AUGUST','SEPTEMBER','OCTOBER','NOVEMBER','DECEMBER'];
+        const dateNum = now.getDate();
+        const monthStr = months[now.getMonth()];
+        const yearStr = now.getFullYear();
+        const dateStr = dateNum + ' ' + monthStr + ' ' + yearStr;
+
+        document.getElementById('clockTime').textContent = timeStr;
+        document.getElementById('clockDay').textContent = dayStr;
+        document.getElementById('clockDate').textContent = dateStr;
+    }
+
+    updateClock();
+    setInterval(updateClock, 1000);
+</script>
+
+</body>
+</html>
