@@ -1,0 +1,529 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+    <title>📸 My Gallery · Polaroid</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,700&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Lato', 'Segoe UI', sans-serif;
+            background: #faf3e0;
+            min-height: 100vh;
+            padding: 2rem 1.5rem;
+            background: linear-gradient(145deg, #f8efe0 0%, #eaddca 100%);
+        }
+
+        .page {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .top-bar {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 2.2rem;
+            gap: 1rem 0.5rem;
+        }
+
+        .lang-toggle {
+            display: flex;
+            gap: 0.8rem;
+            order: 0;
+        }
+
+        .back-home {
+            background: #dcc29e;
+            border: none;
+            padding: 8px 24px;
+            border-radius: 40px;
+            font-weight: bold;
+            font-size: 0.85rem;
+            cursor: pointer;
+            color: #3d2a18;
+            transition: 0.2s;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            font-family: 'Lato', sans-serif;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+            order: 1;
+        }
+        .back-home:hover {
+            background: #c9a87c;
+            transform: scale(0.97);
+            color: #fff;
+        }
+
+        .lang-btn {
+            background: #e7dbbc;
+            border: none;
+            padding: 8px 22px;
+            border-radius: 40px;
+            font-weight: bold;
+            font-size: 0.85rem;
+            cursor: pointer;
+            color: #5a3a22;
+            transition: 0.2s;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+            font-family: 'Lato', sans-serif;
+        }
+
+        .lang-btn:hover {
+            background: #ddc89b;
+            transform: scale(0.97);
+        }
+
+        .lang-btn.active {
+            background: #c9a87c;
+            color: #fff;
+            box-shadow: 0 2px 8px rgba(100, 60, 20, 0.2);
+        }
+
+        .main-title {
+            font-family: 'Playfair Display', serif;
+            font-weight: 700;
+            font-style: italic;
+            font-size: 3.2rem;
+            letter-spacing: 0.02em;
+            color: #4d2e1b;
+            text-align: center;
+            margin-bottom: 2.8rem;
+            border-bottom: 2px dashed #dac29e;
+            padding-bottom: 0.6rem;
+            display: inline-block;
+            width: 100%;
+        }
+
+        .polaroid-grid {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            align-items: stretch;
+            gap: 3rem 3.5rem;
+        }
+
+        .polaroid {
+            background: rgba(255, 250, 240, 0.88);
+            backdrop-filter: blur(2px);
+            box-shadow: 0 16px 30px -8px rgba(80, 50, 20, 0.25),
+                        0 4px 10px rgba(0, 0, 0, 0.05),
+                        inset 0 0 0 1px rgba(255, 245, 235, 0.6);
+            padding: 1.2rem 1.2rem 2rem 1.2rem;
+            width: 300px;
+            min-width: 250px;
+            border-radius: 48px 48px 18px 18px;
+            transform: rotate(var(--rot, 0deg));
+            transition: all 0.2s ease;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            border: 1px solid #eedbc0;
+            position: relative;
+        }
+
+        .polaroid:nth-child(1) { --rot: -2.8deg; }
+        .polaroid:nth-child(2) { --rot: 3.5deg; }
+        .polaroid:nth-child(3) { --rot: -1.5deg; }
+        .polaroid:nth-child(4) { --rot: 4.2deg; }
+
+        .polaroid:hover {
+            transform: rotate(0deg) scale(1.02);
+            box-shadow: 0 28px 40px -12px rgba(80, 50, 20, 0.35);
+            transition: all 0.15s ease;
+            z-index: 10;
+        }
+
+        .polaroid::after {
+            content: '';
+            position: absolute;
+            inset: -2px;
+            border-radius: 50px;
+            background: linear-gradient(130deg, #dbbd94, #f2e0c0, #dbbd94);
+            z-index: -1;
+            opacity: 0.4;
+            filter: blur(4px);
+        }
+
+        .polaroid-image-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            grid-template-rows: 1fr 1fr;
+            gap: 6px;
+            width: 100%;
+            aspect-ratio: 1 / 1;
+            background: #e8dcc8;
+            border-radius: 24px;
+            overflow: hidden;
+            box-shadow: inset 0 2px 8px rgba(0,0,0,0.08);
+            margin-bottom: 1.2rem;
+            border: 1px solid #eedbc0;
+        }
+
+        .polaroid-image-grid .img-wrapper {
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #d4c5b8;
+        }
+
+        .polaroid-image-grid .img-wrapper img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+            transition: transform 0.3s ease;
+        }
+
+        .polaroid-image-grid .img-wrapper img:hover {
+            transform: scale(1.08);
+        }
+
+        .polaroid-content {
+            width: 100%;
+            padding: 0 0.2rem;
+        }
+
+        .polaroid-title {
+            font-family: 'Playfair Display', serif;
+            font-weight: 700;
+            font-size: 1.9rem;
+            letter-spacing: 1px;
+            color: #4d2e1b;
+            text-decoration: underline;
+            text-decoration-thickness: 2.5px;
+            text-underline-offset: 6px;
+            text-decoration-color: #bf9f8a;
+            margin-bottom: 0.9rem;
+            text-align: center;
+            word-break: break-word;
+        }
+
+        .polaroid-bullets {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .polaroid-bullets li {
+            font-size: 0.95rem;
+            line-height: 1.5;
+            color: #3d2a18;
+            padding: 0.2rem 0 0.2rem 1.8rem;
+            position: relative;
+            font-weight: 350;
+            border-bottom: 1px dashed #e9dbd0;
+            margin-bottom: 0.3rem;
+        }
+        .polaroid-bullets li:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+        }
+        .polaroid-bullets li::before {
+            content: "✦";
+            position: absolute;
+            left: 0.1rem;
+            top: 0.2rem;
+            color: #b58b74;
+            font-size: 1rem;
+            opacity: 0.8;
+        }
+
+        .polaroid-footer {
+            margin-top: 0.5rem;
+            font-size: 0.6rem;
+            letter-spacing: 2px;
+            color: #b09573;
+            text-transform: uppercase;
+            font-family: 'Lato', sans-serif;
+            opacity: 0.7;
+        }
+
+        /* ===== FOOTER with clock & date ===== */
+        .page-footer {
+            margin-top: 3.5rem;
+            text-align: center;
+            font-size: 0.7rem;
+            color: #b09573;
+            letter-spacing: 2px;
+            font-family: 'Lato', sans-serif;
+            border-top: 1px solid #e2cfb2;
+            padding-top: 1.2rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.6rem;
+        }
+
+        .clock-date {
+            display: flex;
+            justify-content: center;
+            gap: 1.8rem;
+            flex-wrap: wrap;
+            font-weight: 400;
+            font-size: 0.9rem;
+            letter-spacing: 0.4px;
+            color: #5a3f28;
+            background: #f7ecd9;
+            padding: 0.45rem 1.8rem;
+            border-radius: 60px;
+            border: 1px solid #e6d3b5;
+            box-shadow: inset 0 1px 6px rgba(0,0,0,0.04);
+        }
+
+        .clock-date span {
+            padding: 0 4px;
+        }
+
+        .clock-date .separator {
+            opacity: 0.3;
+        }
+
+        @media (max-width: 700px) {
+            .polaroid { width: 260px; }
+            .polaroid-image-grid { gap: 4px; }
+            .main-title { font-size: 2.6rem; }
+            .clock-date {
+                font-size: 0.75rem;
+                padding: 0.35rem 1rem;
+                gap: 0.6rem;
+                flex-wrap: wrap;
+            }
+        }
+        @media (max-width: 500px) {
+            .polaroid { width: 220px; padding: 0.8rem 0.8rem 1.6rem; }
+            .polaroid-title { font-size: 1.5rem; }
+            .top-bar { flex-direction: column; align-items: stretch; }
+            .lang-toggle { align-self: center; }
+            .clock-date {
+                font-size: 0.7rem;
+                padding: 0.3rem 0.8rem;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="page">
+
+    <div class="top-bar">
+        <div class="lang-toggle">
+            <button class="lang-btn active" data-lang="en" onclick="setLang('en')">ENGLISH</button>
+            <button class="lang-btn" data-lang="ms" onclick="setLang('ms')">BAHASA MELAYU</button>
+        </div>
+        <a href="index.html" class="back-home" id="backHome"> BACK TO HOMEPAGE</a>
+    </div>
+
+    <h1 class="main-title" id="mainTitle">
+        <span id="titleWord1">My</span> <span id="titleWord2">Gallery</span>
+    </h1>
+
+    <div class="polaroid-grid">
+        <!-- ===== 1. FOODS ===== -->
+        <div class="polaroid polaroid-food">
+            <div class="polaroid-image-grid">
+                <div class="img-wrapper"><img src="Thong bowl.jpeg" alt="Thong Bowl"></div>
+                <div class="img-wrapper"><img src="Strawberry milkshake.jpeg" alt="Strawberry Milkshake"></div>
+                <div class="img-wrapper"><img src="Hot crush.jpeg" alt="Hot Crush"></div>
+                <div class="img-wrapper"><img src="Waffle.jpeg" alt="Waffle"></div>
+            </div>
+            <div class="polaroid-content">
+                <div class="polaroid-title" id="foodTitle">Foods</div>
+                <ul class="polaroid-bullets" id="foodList">
+                    <li>Thong Bowl</li>
+                    <li>Strawberry Milkshake</li>
+                    <li>Hot Crush</li>
+                    <li>Waffle</li>
+                </ul>
+            </div>
+            <div class="polaroid-footer" id="foodFooter"># savor</div>
+        </div>
+
+        <!-- ===== 2. FRIENDS ===== -->
+        <div class="polaroid polaroid-friends">
+            <div class="polaroid-image-grid">
+                <div class="img-wrapper"><img src="classmates.jpeg" alt="Classmates"></div>
+                <div class="img-wrapper"><img src="fantastic four.jpeg" alt="Fantastic Four"></div>
+                <div class="img-wrapper"><img src="powerpuff girl.jpeg" alt="Powerpuff Girl"></div>
+                <div class="img-wrapper"><img src="bunga.jpeg" alt="Bunga"></div>
+            </div>
+            <div class="polaroid-content">
+                <div class="polaroid-title" id="friendsTitle">Friends</div>
+                <ul class="polaroid-bullets" id="friendsList">
+                    <li>Classmates</li>
+                    <li>Fantastic Four</li>
+                    <li>Powerpuff Girl</li>
+                    <li>Bunga</li>
+                </ul>
+            </div>
+            <div class="polaroid-footer" id="friendsFooter"># together</div>
+        </div>
+
+        <!-- ===== 3. VACATION ===== -->
+        <div class="polaroid polaroid-vacation">
+            <div class="polaroid-image-grid">
+                <div class="img-wrapper"><img src="penang.jpeg" alt="Penang"></div>
+                <div class="img-wrapper"><img src="terengganu.jpeg" alt="Terengganu"></div>
+                <div class="img-wrapper"><img src="cameron.jpeg" alt="Cameron Highlands"></div>
+                <div class="img-wrapper"><img src="perak.jpeg" alt="Perak"></div>
+            </div>
+            <div class="polaroid-content">
+                <div class="polaroid-title" id="vacationTitle">Vacation</div>
+                <ul class="polaroid-bullets" id="vacationList">
+                    <li>Penang</li>
+                    <li>Terengganu</li>
+                    <li>Cameron Highlands</li>
+                    <li>Perak</li>
+                </ul>
+            </div>
+            <div class="polaroid-footer" id="vacationFooter"># escape</div>
+        </div>
+
+        <!-- ===== 4. PET (TOMMY) ===== -->
+        <div class="polaroid polaroid-pet">
+            <div class="polaroid-image-grid">
+                <div class="img-wrapper"><img src="tommy tenung.jpeg" alt="Cute"></div>
+                <div class="img-wrapper"><img src="tommy baring.jpeg" alt="Clingy"></div>
+                <div class="img-wrapper"><img src="tommy pandang.jpeg" alt="Fluffy"></div>
+                <div class="img-wrapper"><img src="tommy mannequin.jpeg" alt="Active"></div>
+            </div>
+            <div class="polaroid-content">
+                <div class="polaroid-title" id="petTitle">Pet</div>
+                <ul class="polaroid-bullets" id="petList">
+                    <li>Cute</li>
+                    <li>Clingy</li>
+                    <li>Fluffy</li>
+                    <li>Active</li>
+                </ul>
+            </div>
+            <div class="polaroid-footer" id="petFooter"># loyal</div>
+        </div>
+    </div>
+
+    <!-- FOOTER with clock & date -->
+    <div class="page-footer">
+        <span id="pageFooterText">✦  four memories · polaroid  ✦</span>
+        <div class="clock-date" id="clockDateDisplay">
+            <span id="clockTime">--:--:--</span>
+            <span class="separator">|</span>
+            <span id="clockDay">---</span>
+            <span class="separator">|</span>
+            <span id="clockDate">-- --- ----</span>
+        </div>
+    </div>
+</div>
+
+<script>
+    const translations = {
+        en: {
+            backHome: 'BACK TO HOMEPAGE',
+            title1: 'My',
+            title2: 'Gallery',
+            foodTitle: 'Foods',
+            foodList: ['Thong Bowl', 'Strawberry Milkshake', 'Hot Crush', 'Waffle'],
+            foodFooter: '# savor',
+            friendsTitle: 'Friends',
+            friendsList: ['Classmates', 'Fantastic Four', 'Powerpuff Girl', 'Bunga'],
+            friendsFooter: '# together',
+            vacationTitle: 'Vacation',
+            vacationList: ['Penang', 'Terengganu', 'Cameron Highlands', 'Perak'],
+            vacationFooter: '# escape',
+            petTitle: 'Pet',
+            petList: ['Cute', 'Clingy', 'Fluffy', 'Active'],
+            petFooter: '# loyal',
+            pageFooter: '✦  four memories · polaroid  ✦'
+        },
+        ms: {
+            backHome: 'KEMBALI KE LAMAN UTAMA',
+            title1: 'Galeri',
+            title2: 'Saya',
+            foodTitle: 'Makanan',
+            foodList: ['Thong Bowl', 'Strawberry Milkshake', 'Hot Crush', 'Waffle'],
+            foodFooter: '# nikmat',
+            friendsTitle: 'Rakan',
+            friendsList: ['Rakan Sekelas', 'Fantastic Four', 'Powerpuff Girl', 'Bunga'],
+            friendsFooter: '# bersama',
+            vacationTitle: 'Percutian',
+            vacationList: ['Pulau Pinang', 'Terengganu', 'Cameron Highlands', 'Perak'],
+            vacationFooter: '# lari',
+            petTitle: 'Haiwan',
+            petList: ['Comel', 'Manja', 'Gebu', 'Aktif'],
+            petFooter: '# setia',
+            pageFooter: '✦  empat kenangan · polaroid  ✦'
+        }
+    };
+
+    function setLang(lang) {
+        document.querySelectorAll('.lang-btn').forEach(btn => {
+            btn.classList.toggle('active', btn.dataset.lang === lang);
+        });
+
+        const t = translations[lang];
+        document.getElementById('backHome').textContent = t.backHome;
+        document.getElementById('titleWord1').textContent = t.title1;
+        document.getElementById('titleWord2').textContent = t.title2;
+
+        document.getElementById('foodTitle').textContent = t.foodTitle;
+        document.getElementById('foodList').innerHTML = t.foodList.map(item => `<li>${item}</li>`).join('');
+        document.getElementById('foodFooter').textContent = t.foodFooter;
+
+        document.getElementById('friendsTitle').textContent = t.friendsTitle;
+        document.getElementById('friendsList').innerHTML = t.friendsList.map(item => `<li>${item}</li>`).join('');
+        document.getElementById('friendsFooter').textContent = t.friendsFooter;
+
+        document.getElementById('vacationTitle').textContent = t.vacationTitle;
+        document.getElementById('vacationList').innerHTML = t.vacationList.map(item => `<li>${item}</li>`).join('');
+        document.getElementById('vacationFooter').textContent = t.vacationFooter;
+
+        document.getElementById('petTitle').textContent = t.petTitle;
+        document.getElementById('petList').innerHTML = t.petList.map(item => `<li>${item}</li>`).join('');
+        document.getElementById('petFooter').textContent = t.petFooter;
+
+        document.getElementById('pageFooterText').textContent = t.pageFooter;
+    }
+
+    document.addEventListener('DOMContentLoaded', function() {
+        setLang('en');
+    });
+
+    // ===== CLOCK + DAY + DATE =====
+    function updateClock() {
+        const now = new Date();
+        const h = String(now.getHours()).padStart(2, '0');
+        const m = String(now.getMinutes()).padStart(2, '0');
+        const s = String(now.getSeconds()).padStart(2, '0');
+        const timeStr = h + ':' + m + ':' + s;
+
+        const days = ['SUNDAY', 'MONDAY', 'TUESDAY', 'WEDNESDAY', 'THURSDAY', 'FRIDAY', 'SATURDAY'];
+        const dayStr = days[now.getDay()];
+
+        const months = ['JANUARY','FEBRUARY','MARCH','APRIL','MAY','JUNE','JULY','AUGUST','SEPTEMBER','OCTOBER','NOVEMBER','DECEMBER'];
+        const dateNum = now.getDate();
+        const monthStr = months[now.getMonth()];
+        const yearStr = now.getFullYear();
+        const dateStr = dateNum + ' ' + monthStr + ' ' + yearStr;
+
+        document.getElementById('clockTime').textContent = timeStr;
+        document.getElementById('clockDay').textContent = dayStr;
+        document.getElementById('clockDate').textContent = dateStr;
+    }
+
+    updateClock();
+    setInterval(updateClock, 1000);
+</script>
+</body>
+</html>

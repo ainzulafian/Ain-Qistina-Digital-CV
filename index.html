@@ -1,0 +1,885 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+    <title>Ain Qistina | The Digital CV</title>
+    <!-- Google Font -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,700&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Lato', 'Segoe UI', system-ui, sans-serif;
+            background: #faf3e0;
+            color: #3e2a1f;
+            line-height: 1.6;
+        }
+
+        .app-container {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* ========== SIDEBAR ========== */
+        .sidebar {
+            width: 100px;
+            background: linear-gradient(145deg, #c8965e 0%, #a8733a 100%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 1.2rem 0.5rem;
+            position: sticky;
+            top: 0;
+            height: 100vh;
+            border-right: 2px solid #dbb88a;
+            box-shadow: 4px 0 20px rgba(0,0,0,0.12);
+            z-index: 10;
+            transition: all 0.3s ease;
+            overflow-y: auto;
+        }
+
+        /* ===== HAMBURGER ICON ===== */
+        .hamburger-icon {
+            width: 44px;
+            height: 34px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            cursor: pointer;
+            margin-bottom: 1.8rem;
+            align-self: flex-start;
+            margin-left: 0.8rem;
+            padding: 4px 2px;
+            border-radius: 8px;
+            transition: 0.3s ease;
+            background: rgba(255, 239, 192, 0.25);
+            padding: 6px 8px;
+            flex-shrink: 0;
+        }
+
+        .hamburger-icon:hover {
+            background: rgba(255, 239, 192, 0.45);
+            transform: scale(1.05);
+        }
+
+        .hamburger-icon span {
+            height: 4px;
+            width: 100%;
+            background-color: #f5e6c8;
+            border-radius: 6px;
+            transition: 0.3s ease;
+            box-shadow: 0 1px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        .hamburger-icon:hover span {
+            background-color: #ffffff;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+        }
+
+        .hamburger-icon.active span:nth-child(1) {
+            transform: rotate(45deg) translate(6px, 6px);
+        }
+
+        .hamburger-icon.active span:nth-child(2) {
+            opacity: 0;
+            transform: scaleX(0);
+        }
+
+        .hamburger-icon.active span:nth-child(3) {
+            transform: rotate(-45deg) translate(6px, -6px);
+        }
+
+        /* ===== NAVIGATION ITEMS CONTAINER - HIDDEN BY DEFAULT ===== */
+        .nav-icons {
+            display: flex;
+            flex-direction: column;
+            gap: 0.6rem;
+            width: 100%;
+            align-items: center;
+            transition: all 0.4s ease;
+            overflow: hidden;
+            max-height: 0;
+            opacity: 0;
+            pointer-events: none;
+            visibility: hidden;
+        }
+
+        .nav-icons.open {
+            max-height: 600px;
+            opacity: 1;
+            pointer-events: auto;
+            visibility: visible;
+            gap: 0.6rem;
+        }
+
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 3px;
+            width: 90px;
+            text-align: center;
+            transition: 0.2s;
+            padding: 4px 0;
+            border-radius: 16px;
+            position: relative;
+            text-decoration: none;
+            cursor: pointer;
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .nav-item:hover .nav-icon-symbol {
+            transform: translateY(-4px);
+            background: #ffefc0;
+        }
+
+        .nav-item .nav-icon-symbol {
+            font-size: 1.8rem;
+            background: #f9e0b0;
+            width: 56px;
+            height: 56px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            transition: 0.25s ease;
+            color: #7a4a2a;
+            font-weight: 400;
+        }
+
+        .nav-label {
+            font-size: 0.72rem;
+            font-weight: 800;
+            color: #2f241b;
+            letter-spacing: 0.6px;
+            text-transform: uppercase;
+            white-space: nowrap;
+            text-shadow: 0 1px 2px rgba(255, 215, 150, 0.3);
+        }
+
+        /* ========== MAIN CONTENT ========== */
+        .main-content {
+            flex: 1;
+            padding: 2rem 2.5rem;
+            background: #fffaf2;
+            overflow-y: auto;
+            opacity: 0;
+            animation: fadeInUp 0.8s ease 0.2s forwards;
+        }
+
+        @keyframes fadeInUp {
+            0% {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Staggered animation */
+        .top-lang,
+        .hero-title,
+        .profile-row,
+        .social-row,
+        .projects-wrapper,
+        .media-showcase,
+        footer {
+            opacity: 0;
+            animation: fadeInUp 0.6s ease forwards;
+        }
+
+        .top-lang { animation-delay: 0.3s; }
+        .hero-title { animation-delay: 0.4s; }
+        .profile-row { animation-delay: 0.5s; }
+        .social-row { animation-delay: 0.6s; }
+        .projects-wrapper { animation-delay: 0.7s; }
+        .media-showcase { animation-delay: 0.8s; }
+        footer { animation-delay: 0.9s; }
+
+        .media-box {
+            opacity: 0;
+            animation: fadeInUp 0.6s ease forwards;
+        }
+        .media-box:nth-child(1) { animation-delay: 0.9s; }
+        .media-box:nth-child(2) { animation-delay: 1.0s; }
+        .media-box:nth-child(3) { animation-delay: 1.1s; }
+
+        .top-lang {
+            display: flex;
+            justify-content: flex-end;
+            gap: 14px;
+            margin-bottom: 1rem;
+        }
+
+        .lang-btn {
+            background: #e7dbbc;
+            border: none;
+            padding: 8px 22px;
+            border-radius: 40px;
+            font-weight: bold;
+            font-size: 0.85rem;
+            cursor: pointer;
+            color: #5a3a22;
+            transition: 0.2s;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        }
+
+        .lang-btn:hover {
+            background: #ddc89b;
+            transform: scale(0.97);
+        }
+
+        .lang-btn.active {
+            background: #c9a87c;
+            color: #fff;
+            box-shadow: 0 2px 8px rgba(100, 60, 20, 0.2);
+        }
+
+        .hero-title {
+            text-align: center;
+            margin: 0.5rem 0 1.5rem;
+        }
+
+        .hero-title h1 {
+            font-family: 'Playfair Display', serif;
+            font-weight: 700;
+            font-style: italic;
+            font-size: 2.6rem;
+            letter-spacing: 0.02em;
+            background: linear-gradient(135deg, #2c1810 0%, #7a4a2e 45%, #b78a5a 80%, #4d2e1b 100%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            text-shadow: 2px 4px 14px rgba(120, 70, 30, 0.15);
+            padding: 0.2rem 0.8rem;
+            display: inline-block;
+            border-bottom: 3px solid #c9a87c;
+            border-radius: 4px;
+            line-height: 1.3;
+        }
+
+        .profile-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 2rem;
+            margin: 1.5rem 0 2rem;
+            align-items: stretch;
+        }
+
+        .profile-pic {
+            flex: 1;
+            min-width: 240px;
+            max-width: 340px;
+            display: flex;
+            align-items: stretch;
+        }
+
+        .profile-pic img {
+            width: 100%;
+            border-radius: 32px;
+            box-shadow: 0 20px 30px -12px rgba(0, 0, 0, 0.2);
+            border: 4px solid #eedba7;
+            object-fit: cover;
+            background: #e8dcc8;
+            height: 100%;
+            min-height: 350px;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .profile-pic img:hover {
+            transform: scale(1.02);
+            box-shadow: 0 25px 40px -12px rgba(0, 0, 0, 0.3);
+        }
+
+        .info-side {
+            flex: 2;
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .info-card {
+            background: #ffffffdb;
+            border-radius: 28px;
+            padding: 1.4rem 1.8rem;
+            border: 1px solid #eed6a8;
+            box-shadow: 0 8px 18px rgba(100, 60, 20, 0.08);
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .info-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 28px rgba(100, 60, 20, 0.12);
+        }
+
+        .info-card h2 {
+            font-size: 1.5rem;
+            border-left: 5px solid #c68b3c;
+            padding-left: 14px;
+            margin-bottom: 0.8rem;
+            color: #7b4a26;
+            font-family: 'Playfair Display', serif;
+        }
+
+        .info-card p {
+            text-align: justify;
+            flex: 1;
+        }
+
+        .contact-details p {
+            margin: 0.7rem 0;
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            flex-wrap: wrap;
+            font-size: 1rem;
+            text-align: justify;
+        }
+
+        .contact-details a {
+            color: #c1773a;
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .contact-details a:hover {
+            text-decoration: underline;
+        }
+
+        .social-row {
+            display: flex;
+            gap: 2rem;
+            justify-content: center;
+            margin: 0.5rem 0 1.5rem;
+        }
+
+        .social-icon {
+            background: #f2e2c6;
+            border-radius: 50%;
+            width: 60px;
+            height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+            color: #7a4a2a;
+            transition: 0.25s ease;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+            padding: 12px;
+        }
+
+        .social-icon svg {
+            width: 32px;
+            height: 32px;
+            fill: currentColor;
+            transition: 0.2s;
+        }
+
+        .social-icon:hover {
+            transform: translateY(-5px) scale(1.05);
+            background: #ecd6a8;
+            color: #a06730;
+            box-shadow: 0 8px 25px rgba(120, 70, 30, 0.2);
+        }
+
+        .projects-heading {
+            text-align: center;
+            margin: 1.5rem 0 0.5rem;
+            font-family: 'Playfair Display', serif;
+            font-weight: 700;
+            font-size: 2rem;
+            color: #5a3a22;
+            letter-spacing: 0.05em;
+            border-bottom: 2px solid #e4cfaa;
+            padding-bottom: 0.5rem;
+            display: inline-block;
+            width: auto;
+            padding-left: 2rem;
+            padding-right: 2rem;
+        }
+
+        .projects-wrapper {
+            text-align: center;
+        }
+
+        .media-showcase {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1.5rem;
+            margin: 1rem 0 1rem;
+            justify-content: center;
+        }
+
+        .media-box {
+            flex: 1 1 200px;
+            max-width: 260px;
+            background: #faf0e2;
+            border-radius: 24px;
+            overflow: hidden;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+            border: 1px solid #e4cfaa;
+            transition: 0.3s ease;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .media-box:hover {
+            transform: translateY(-8px) scale(1.02);
+            box-shadow: 0 16px 32px rgba(0, 0, 0, 0.15);
+        }
+
+        .video-portrait {
+            position: relative;
+            width: 100%;
+            padding-top: 177.77%;
+            background: #1a1a2e;
+            overflow: hidden;
+        }
+
+        .video-portrait video {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            background: #1a1a2e;
+            display: block;
+        }
+
+        .media-caption {
+            text-align: center;
+            padding: 12px;
+            font-weight: 700;
+            color: #7b4a26;
+            background: #f9e0b0;
+            font-size: 0.9rem;
+            flex-shrink: 0;
+        }
+
+        footer {
+            text-align: center;
+            margin-top: 2.5rem;
+            font-size: 0.8rem;
+            color: #9b7a5a;
+            border-top: 1px solid #e2cca8;
+            padding-top: 1.2rem;
+        }
+        /* clock & date row */
+        .clock-date {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            flex-wrap: wrap;
+            margin-top: 0.5rem;
+            font-weight: 400;
+            font-size: 0.9rem;
+            letter-spacing: 0.4px;
+            color: #5a3f28;
+            background: #f7ecd9;
+            padding: 0.5rem 1.5rem;
+            border-radius: 60px;
+            display: inline-flex;
+            margin-left: auto;
+            margin-right: auto;
+            box-shadow: inset 0 1px 6px rgba(0,0,0,0.04);
+            border: 1px solid #e6d3b5;
+        }
+        .clock-date span {
+            padding: 0 6px;
+        }
+        .clock-date .separator {
+            opacity: 0.4;
+        }
+        footer .footer-inner {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.6rem;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 850px) {
+            .sidebar {
+                width: 100px;
+                padding: 1rem 0.3rem;
+            }
+            .nav-item .nav-icon-symbol {
+                width: 48px;
+                height: 48px;
+                font-size: 1.5rem;
+            }
+            .nav-label {
+                font-size: 0.6rem;
+                letter-spacing: 0.4px;
+            }
+            .main-content {
+                padding: 1rem;
+            }
+            .hero-title h1 {
+                font-size: 1.8rem;
+            }
+            .profile-row {
+                flex-direction: column;
+            }
+            .profile-pic {
+                max-width: 100%;
+            }
+            .profile-pic img {
+                min-height: 280px;
+            }
+            .media-box {
+                max-width: 220px;
+                flex: 1 1 160px;
+            }
+            .projects-heading {
+                font-size: 1.6rem;
+            }
+            .social-icon {
+                width: 50px;
+                height: 50px;
+                padding: 10px;
+            }
+            .social-icon svg {
+                width: 26px;
+                height: 26px;
+            }
+            .hamburger-icon {
+                width: 36px;
+                height: 28px;
+                padding: 4px 6px;
+            }
+            .hamburger-icon span {
+                height: 3px;
+            }
+            .clock-date {
+                font-size: 0.75rem;
+                padding: 0.4rem 1rem;
+                gap: 0.6rem;
+            }
+        }
+
+        @media (max-width: 550px) {
+            .hero-title h1 {
+                font-size: 1.4rem;
+            }
+            .media-box {
+                max-width: 160px;
+                flex: 1 1 120px;
+            }
+            .projects-heading {
+                font-size: 1.3rem;
+                padding-left: 1rem;
+                padding-right: 1rem;
+            }
+            .sidebar {
+                width: 80px;
+                padding: 0.8rem 0.2rem;
+            }
+            .nav-item .nav-icon-symbol {
+                width: 42px;
+                height: 42px;
+                font-size: 1.2rem;
+            }
+            .nav-label {
+                font-size: 0.5rem;
+                letter-spacing: 0.2px;
+            }
+            .nav-item {
+                width: 70px;
+            }
+            .hamburger-icon {
+                width: 32px;
+                height: 24px;
+                padding: 3px 5px;
+                margin-left: 0.3rem;
+            }
+            .hamburger-icon span {
+                height: 3px;
+            }
+            .clock-date {
+                font-size: 0.7rem;
+                padding: 0.3rem 0.8rem;
+                gap: 0.4rem;
+                flex-wrap: wrap;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="app-container">
+    <!-- LEFT SIDEBAR -->
+    <aside class="sidebar">
+        <div class="hamburger-icon" id="hamburgerMenu">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+        <div class="nav-icons" id="navIcons">
+            <a href="biodata.html" target="_blank" class="nav-item" data-tab="biodata">
+                <div class="nav-icon-symbol">👤</div>
+                <span class="nav-label" data-en="BIODATA" data-bm="BIODATA">BIODATA</span>
+            </a>
+            <a href="education.html" target="_blank" class="nav-item" data-tab="education">
+                <div class="nav-icon-symbol">🎓</div>
+                <span class="nav-label" data-en="EDUCATION" data-bm="PENDIDIKAN">EDUCATION</span>
+            </a>
+            <a href="family.html" target="_blank" class="nav-item" data-tab="family">
+                <div class="nav-icon-symbol">🏠</div>
+                <span class="nav-label" data-en="FAMILY" data-bm="KELUARGA">FAMILY</span>
+            </a>
+            <a href="gallery.html" target="_blank" class="nav-item" data-tab="gallery">
+                <div class="nav-icon-symbol">🖼️</div>
+                <span class="nav-label" data-en="GALLERY" data-bm="GALERI">GALLERY</span>
+            </a>
+            <a href="experience.html" target="_blank" class="nav-item" data-tab="experience">
+                <div class="nav-icon-symbol">💼</div>
+                <span class="nav-label" data-en="EXPERIENCE" data-bm="PENGALAMAN">EXPERIENCE</span>
+            </a>
+        </div>
+    </aside>
+
+    <!-- MAIN CONTENT -->
+    <main class="main-content">
+        <!-- Language Switcher -->
+        <div class="top-lang">
+            <button id="langEngBtn" class="lang-btn active">ENGLISH</button>
+            <button id="langBmBtn" class="lang-btn">BAHASA MELAYU</button>
+        </div>
+
+        <!-- Title -->
+        <div class="hero-title">
+            <h1 id="digitalCvTitle" data-en="THE DIGITAL CV of NUR AIN QISTINA" data-bm="CV DIGITAL NUR AIN QISTINA">THE DIGITAL CV of NUR AIN QISTINA</h1>
+        </div>
+
+        <!-- Profile Row -->
+        <div class="profile-row">
+            <div class="profile-pic">
+                <img src="c:\Users\LENOVO\Downloads\ain homepage.jpeg" alt="Ain Qistina Portrait" onerror="this.onerror=null; this.src='https://ui-avatars.com/api/?background=d4a373&color=fff&rounded=true&size=280&name=Ain+Qistina';">
+            </div>
+            <div class="info-side">
+                <div class="info-card">
+                    <h2 id="aboutTitle" data-en="ABOUT ME" data-bm="TENTANG SAYA">ABOUT ME</h2>
+                    <p id="aboutText" data-en="A student in diploma information management at Universiti Teknologi MARA (UiTM) who is actively seeking a job opportunity to apply my expertise in records management, database systems, and office administration. Responsible and adaptable individual, eager to contribute to your organization by supporting tasks in information handling, digital updates, and administrative functions while adhering strictly to all professional and confidentiality protocols." 
+                       data-bm="Seorang pelajar dalam diploma pengurusan maklumat di Universiti Teknologi MARA (UiTM) yang sedang aktif mencari peluang pekerjaan untuk menggunakan kepakaran saya dalam pengurusan rekod, sistem pangkalan data, dan pentadbiran pejabat. Individu yang bertanggungjawab dan mudah menyesuaikan diri, berhasrat menyumbang kepada organisasi anda dengan menyokong tugasan dalam pengendalian maklumat, kemas kini digital, dan fungsi pentadbiran sambil mematuhi sepenuhnya semua protokol profesional dan kerahsiaan.">
+                        A student in diploma information management at Universiti Teknologi MARA (UiTM) who is actively seeking a job opportunity to apply my expertise in records management, database systems, and office administration. Responsible and adaptable individual, eager to contribute to your organization by supporting tasks in information handling, digital updates, and administrative functions while adhering strictly to all professional and confidentiality protocols.
+                    </p>
+                </div>
+                <div class="info-card">
+                    <h2 id="contactTitle" data-en="CONTACT ME" data-bm="HUBUNGI SAYA">CONTACT ME</h2>
+                    <div class="contact-details">
+                        <p>📞 <strong id="whatsappLabel" data-en="WhatsApp:" data-bm="WhatsApp:">WhatsApp:</strong> <a href="https://wa.me/60193058258" target="_blank">+6019-3058258</a></p>
+                        <p>📧 <strong id="emailLabel" data-en="Email:" data-bm="Emel:">Email:</strong> <a href="mailto:2024902379@student.uitm.edu.my">2024902379@student.uitm.edu.my</a></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Social Icons -->
+        <div class="social-row">
+            <a href="https://wa.me/60193058258" target="_blank" class="social-icon" aria-label="WhatsApp">
+                <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
+                </svg>
+            </a>
+            <a href="https://instagram.com/ainzulafian" target="_blank" class="social-icon" aria-label="Instagram">
+                <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/>
+                </svg>
+            </a>
+            <a href="mailto:2024902379@student.uitm.edu.my" class="social-icon" aria-label="Email">
+                <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M24 5.457v13.909c0 .904-.732 1.636-1.636 1.636h-3.819V11.73L12 16.64l-6.545-4.91v9.273H1.636A1.636 1.636 0 010 19.366V5.457c0-1.023.59-1.908 1.44-2.36l10.118 7.59 10.118-7.59c.85.452 1.44 1.337 1.44 2.36z"/>
+                </svg>
+            </a>
+        </div>
+
+        <!-- MY PROJECTS -->
+        <div class="projects-wrapper">
+            <h2 class="projects-heading" id="projectsTitle" data-en="MY PROJECTS" data-bm="PROJEK SAYA">MY PROJECTS</h2>
+        </div>
+
+        <!-- Video Boxes -->
+        <div class="media-showcase">
+            <div class="media-box">
+                <div class="video-portrait">
+                    <video controls preload="metadata">
+                        <source src="Magazine.mp4" type="video/mp4">
+                    </video>
+                </div>
+                <div class="media-caption">📰 MAGAZINE</div>
+            </div>
+            <div class="media-box">
+                <div class="video-portrait">
+                    <video controls preload="metadata">
+                        <source src="Community.mp4" type="video/mp4">
+                    </video>
+                </div>
+                <div class="media-caption">🤝 COMMUNITY</div>
+            </div>
+            <div class="media-box">
+                <div class="video-portrait">
+                    <video controls preload="metadata">
+                        <source src="AWS Partyrock.mp4" type="video/mp4">
+                    </video>
+                </div>
+                <div class="media-caption">☁️ AWS PARTYROCK</div>
+            </div>
+        </div>
+
+        <!-- FOOTER with CLOCK + DATE -->
+        <footer>
+            <div class="footer-inner">
+                <p id="footerRights" data-en="©️ 2026 Nur Ain Qistina | The Digital CV – All rights reserved." data-bm="©️ 2026 Nur Ain Qistina | CV Digital – Hak cipta terpelihara.">©️ 2026 Nur Ain Qistina | The Digital CV – All rights reserved.</p>
+                <div class="clock-date" id="clockDateDisplay">
+                    <span id="clockTime">--:--:--</span>
+                    <span class="separator">|</span>
+                    <span id="clockDay">---</span>
+                    <span class="separator">|</span>
+                    <span id="clockDate">-- --- ----</span>
+                </div>
+            </div>
+        </footer>
+    </main>
+</div>
+
+<script>
+    // ===== HAMBURGER MENU TOGGLE =====
+    const hamburger = document.getElementById('hamburgerMenu');
+    const navIcons = document.getElementById('navIcons');
+    let isMenuOpen = false;
+
+    hamburger.addEventListener('click', function(e) {
+        e.stopPropagation();
+        isMenuOpen = !isMenuOpen;
+        this.classList.toggle('active');
+        if (isMenuOpen) {
+            navIcons.classList.add('open');
+        } else {
+            navIcons.classList.remove('open');
+        }
+    });
+
+    document.querySelector('.main-content').addEventListener('click', function() {
+        if (isMenuOpen) {
+            isMenuOpen = false;
+            hamburger.classList.remove('active');
+            navIcons.classList.remove('open');
+        }
+    });
+
+    document.querySelectorAll('.nav-item').forEach(item => {
+        item.addEventListener('click', function() {
+            isMenuOpen = false;
+            hamburger.classList.remove('active');
+            navIcons.classList.remove('open');
+        });
+    });
+
+    // ===== BILINGUAL FUNCTION =====
+    let currentLang = 'en';
+
+    function setLanguage(lang) {
+        currentLang = lang;
+        document.querySelectorAll('[data-en][data-bm]').forEach(el => {
+            const text = lang === 'en' ? el.getAttribute('data-en') : el.getAttribute('data-bm');
+            if (text) {
+                if (el.tagName === 'INPUT' || el.tagName === 'TEXTAREA') el.value = text;
+                else el.innerText = text;
+            }
+        });
+        
+        const navMap = {
+            biodata: lang === 'en' ? 'BIODATA' : 'BIODATA',
+            education: lang === 'en' ? 'EDUCATION' : 'PENDIDIKAN',
+            family: lang === 'en' ? 'FAMILY' : 'KELUARGA',
+            gallery: lang === 'en' ? 'GALLERY' : 'GALERI',
+            experience: lang === 'en' ? 'EXPERIENCE' : 'PENGALAMAN'
+        };
+        
+        const navItemsList = document.querySelectorAll('.nav-item');
+        const keys = ['biodata', 'education', 'family', 'gallery', 'experience'];
+        navItemsList.forEach((item, idx) => {
+            const labelSpan = item.querySelector('.nav-label');
+            if (labelSpan && keys[idx] && navMap[keys[idx]]) {
+                labelSpan.innerText = navMap[keys[idx]];
+            }
+        });
+        
+        const wLabel = document.getElementById('whatsappLabel');
+        if(wLabel) wLabel.innerText = lang === 'en' ? 'WhatsApp:' : 'WhatsApp:';
+        const emailLabel = document.getElementById('emailLabel');
+        if(emailLabel) emailLabel.innerText = lang === 'en' ? 'Email:' : 'Emel:';
+
+        document.getElementById('langEngBtn').classList.toggle('active', lang === 'en');
+        document.getElementById('langBmBtn').classList.toggle('active', lang === 'bm');
+    }
+
+    document.getElementById('langEngBtn').addEventListener('click', () => setLanguage('en'));
+    document.getElementById('langBmBtn').addEventListener('click', () => setLanguage('bm'));
+    
+    // Profile image fallback
+    const profileImg = document.querySelector('.profile-pic img');
+    if(profileImg) {
+        profileImg.onerror = function() {
+            this.onerror = null;
+            this.src = 'https://ui-avatars.com/api/?background=d4a373&color=fff&rounded=true&size=280&name=Ain+Qistina';
+        };
+    }
+    
+    // Video error logging
+    const videos = document.querySelectorAll('video');
+    videos.forEach(video => {
+        video.addEventListener('error', (e) => {
+            console.warn('Video file missing or unsupported format:', video.querySelector('source')?.src);
+        });
+    });
+    
+    setLanguage('en');
+
+    // ===== CLOCK + DAY + DATE =====
+    function updateClock() {
+        const now = new Date();
+        // time
+        const h = String(now.getHours()).padStart(2, '0');
+        const m = String(now.getMinutes()).padStart(2, '0');
+        const s = String(now.getSeconds()).padStart(2, '0');
+        const timeStr = h + ':' + m + ':' + s;
+        // day
+        const days = ['SUNDAY', 'MONDAY', 'TUESDAY', 'WEDNESDAY', 'THURSDAY', 'FRIDAY', 'SATURDAY'];
+        const dayStr = days[now.getDay()];
+        // date
+        const months = ['JANUARY','FEBRUARY','MARCH','APRIL','MAY','JUNE','JULY','AUGUST','SEPTEMBER','OCTOBER','NOVEMBER','DECEMBER'];
+        const dateNum = now.getDate();
+        const monthStr = months[now.getMonth()];
+        const yearStr = now.getFullYear();
+        const dateStr = dateNum + ' ' + monthStr + ' ' + yearStr;
+
+        document.getElementById('clockTime').textContent = timeStr;
+        document.getElementById('clockDay').textContent = dayStr;
+        document.getElementById('clockDate').textContent = dateStr;
+    }
+
+    updateClock();
+    setInterval(updateClock, 1000);
+</script>
+</body>
+</html>

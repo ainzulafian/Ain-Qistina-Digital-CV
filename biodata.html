@@ -1,0 +1,598 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+  <title>Biodata · Nur Ain Qistina</title>
+  <!-- Google Font (Playfair Display + Lato) for elegance -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,700&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
+  <style>
+    /* ----- global reset & base ----- */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Lato', 'Segoe UI', sans-serif;
+      background: #faf3e0;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem 1.5rem;
+      background: linear-gradient(145deg, #f8efe0 0%, #eaddca 100%);
+    }
+
+    /* ----- main card with entrance animation ----- */
+    .biodata-card {
+      max-width: 950px;
+      width: 100%;
+      background: rgba(255, 250, 240, 0.85);
+      backdrop-filter: blur(2px);
+      border-radius: 48px 48px 48px 48px;
+      box-shadow: 0 25px 45px -12px rgba(80, 50, 20, 0.25),
+                  inset 0 1px 2px rgba(255, 245, 215, 0.6);
+      padding: 2.8rem 3rem;
+      border: 1px solid #eedbc0;
+      transition: all 0.2s ease;
+      position: relative;
+
+      /* ----- ENTRANCE ANIMATION ----- */
+      opacity: 0;
+      transform: translateY(40px);
+      animation: fadeInUp 0.8s ease forwards;
+    }
+
+    @keyframes fadeInUp {
+      0% {
+        opacity: 0;
+        transform: translateY(40px);
+      }
+      100% {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    /* Staggered animation for child elements */
+    .biodata-header,
+    .avatar-col,
+    .info-col,
+    .top-actions {
+      opacity: 0;
+      animation: fadeInUp 0.6s ease forwards;
+    }
+
+    .top-actions {
+      animation-delay: 0.1s;
+    }
+
+    .biodata-header {
+      animation-delay: 0.2s;
+    }
+
+    .avatar-col {
+      animation-delay: 0.3s;
+    }
+
+    .info-col {
+      animation-delay: 0.4s;
+    }
+
+    /* ----- language switcher & back button row ----- */
+    .top-actions {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 1rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .lang-group {
+      display: flex;
+      gap: 0.8rem;
+    }
+
+    .lang-btn {
+      background: #e7dbbc;
+      border: none;
+      padding: 8px 22px;
+      border-radius: 40px;
+      font-weight: bold;
+      font-size: 0.85rem;
+      cursor: pointer;
+      color: #5a3a22;
+      transition: 0.2s;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+      font-family: 'Lato', sans-serif;
+    }
+
+    .lang-btn:hover {
+      background: #ddc89b;
+      transform: scale(0.97);
+    }
+
+    .lang-btn.active {
+      background: #c9a87c;
+      color: #fff;
+      box-shadow: 0 2px 8px rgba(100, 60, 20, 0.2);
+    }
+
+    .back-btn {
+      background: #dcc29e;
+      border: none;
+      padding: 8px 24px;
+      border-radius: 40px;
+      font-weight: bold;
+      font-size: 0.85rem;
+      cursor: pointer;
+      color: #3d2a18;
+      transition: 0.2s;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-family: 'Lato', sans-serif;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+    }
+
+    .back-btn:hover {
+      background: #c9a87c;
+      transform: scale(0.97);
+      color: #fff;
+    }
+
+    /* ----- header / title area (centered) ----- */
+    .biodata-header {
+      text-align: center;
+      margin-bottom: 2.5rem;
+      border-bottom: 2px dashed #dac29e;
+      padding-bottom: 1.2rem;
+    }
+
+    .biodata-header h1 {
+      font-family: 'Playfair Display', serif;
+      font-weight: 700;
+      font-style: italic;
+      font-size: 2.8rem;
+      letter-spacing: 0.02em;
+      color: #4d2e1b;
+      text-shadow: 2px 4px 12px rgba(140, 90, 40, 0.10);
+      display: inline-block;
+      padding: 0 1.5rem;
+      background: linear-gradient(to right, #f7eddc, #fdf6ea);
+      border-radius: 60px;
+      box-shadow: 0 6px 16px rgba(120, 70, 30, 0.08);
+    }
+
+    /* ----- two-column layout (profile + info) ----- */
+    .biodata-grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 2rem;
+      align-items: stretch;
+    }
+
+    /* left column : avatar / photo placeholder */
+    .avatar-col {
+      flex: 1 1 200px;
+      min-width: 180px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+    }
+
+    .avatar-frame {
+      width: 100%;
+      max-width: 220px;
+      aspect-ratio: 1/1;
+      border-radius: 50%;
+      background: #dcc9ae;
+      box-shadow: 0 12px 28px -8px rgba(70, 40, 10, 0.25);
+      border: 6px solid #eedcc0;
+      overflow: hidden;
+      transition: 0.3s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .avatar-frame:hover {
+      transform: scale(1.03);
+      box-shadow: 0 16px 36px -8px rgba(70, 40, 10, 0.35);
+    }
+
+    .avatar-frame img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      background: #d6c3a6;
+    }
+
+    .avatar-caption {
+      margin-top: 1rem;
+      font-size: 0.85rem;
+      background: #e7d6bb;
+      padding: 0.4rem 1.6rem;
+      border-radius: 40px;
+      color: #3d2a18;
+      font-weight: 700;
+      letter-spacing: 0.3px;
+      box-shadow: inset 0 1px 4px rgba(255, 235, 200, 0.6);
+      transition: 0.3s ease;
+    }
+
+    .avatar-caption:hover {
+      background: #ddc89b;
+      transform: scale(1.02);
+    }
+
+    /* right column : data table */
+    .info-col {
+      flex: 2 1 360px;
+      background: rgba(255, 248, 235, 0.5);
+      backdrop-filter: blur(1px);
+      border-radius: 32px;
+      padding: 1.8rem 2rem;
+      border: 1px solid #e9d5b5;
+      box-shadow: inset 0 2px 8px rgba(255, 235, 200, 0.4);
+      transition: 0.3s ease;
+    }
+
+    .info-col:hover {
+      box-shadow: inset 0 2px 12px rgba(255, 235, 200, 0.6), 0 4px 12px rgba(100, 60, 20, 0.06);
+    }
+
+    .info-col h2 {
+      font-family: 'Playfair Display', serif;
+      font-weight: 700;
+      font-size: 1.9rem;
+      color: #5a3920;
+      border-left: 8px solid #bf9a6a;
+      padding-left: 1.2rem;
+      margin-bottom: 1.8rem;
+      letter-spacing: 0.5px;
+    }
+
+    /* ----- biodata items (clean, spacious) ----- */
+    .biodata-item {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: baseline;
+      padding: 0.8rem 0;
+      border-bottom: 1px solid #eadbc2;
+      transition: 0.2s ease;
+    }
+
+    .biodata-item:hover {
+      background: rgba(235, 215, 185, 0.2);
+      border-radius: 8px;
+      padding-left: 0.5rem;
+      padding-right: 0.5rem;
+      margin-left: -0.5rem;
+      margin-right: -0.5rem;
+    }
+
+    .biodata-item:last-of-type {
+      border-bottom: none;
+    }
+
+    .biodata-label {
+      font-weight: 700;
+      width: 130px;
+      color: #6e4f2e;
+      letter-spacing: 0.4px;
+      font-size: 1rem;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .biodata-label i {
+      font-style: normal;
+      font-size: 1.3rem;
+    }
+
+    .biodata-value {
+      flex: 1;
+      color: #2f1f11;
+      font-weight: 400;
+      font-size: 1.05rem;
+      padding-left: 0.2rem;
+      word-break: break-word;
+    }
+
+    /* highlight for name - now using same font weight as others */
+    .highlight-name {
+      font-weight: 400;
+      color: #2f1f11;
+      font-size: 1.05rem;
+    }
+
+    /* ----- footer with clock & date ----- */
+    .biodata-footer {
+      margin-top: 2rem;
+      text-align: center;
+      font-size: 0.75rem;
+      color: #b09573;
+      letter-spacing: 1px;
+      border-top: 1px solid #e2cfb2;
+      padding-top: 1.2rem;
+      opacity: 0;
+      animation: fadeInUp 0.6s ease 0.6s forwards;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.6rem;
+    }
+
+    .clock-date {
+      display: flex;
+      justify-content: center;
+      gap: 1.8rem;
+      flex-wrap: wrap;
+      font-weight: 400;
+      font-size: 0.9rem;
+      letter-spacing: 0.4px;
+      color: #5a3f28;
+      background: #f7ecd9;
+      padding: 0.45rem 1.8rem;
+      border-radius: 60px;
+      border: 1px solid #e6d3b5;
+      box-shadow: inset 0 1px 6px rgba(0,0,0,0.04);
+    }
+
+    .clock-date span {
+      padding: 0 4px;
+    }
+
+    .clock-date .separator {
+      opacity: 0.3;
+    }
+
+    /* ----- responsive ----- */
+    @media (max-width: 650px) {
+      .biodata-card {
+        padding: 1.8rem 1.2rem;
+      }
+      .biodata-header h1 {
+        font-size: 2rem;
+        padding: 0 1rem;
+      }
+      .biodata-grid {
+        flex-direction: column;
+        align-items: center;
+      }
+      .avatar-col {
+        flex: 0 0 auto;
+        width: 70%;
+        max-width: 200px;
+      }
+      .info-col {
+        padding: 1.5rem 1.2rem;
+      }
+      .biodata-label {
+        width: 100%;
+        margin-bottom: 0.2rem;
+      }
+      .biodata-value {
+        padding-left: 0.5rem;
+        width: 100%;
+      }
+      .biodata-item {
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 0.6rem 0;
+      }
+      .top-actions {
+        flex-direction: column;
+        align-items: stretch;
+      }
+      .lang-group {
+        justify-content: center;
+      }
+      .back-btn {
+        justify-content: center;
+      }
+      .clock-date {
+        font-size: 0.75rem;
+        padding: 0.35rem 1rem;
+        gap: 0.6rem;
+        flex-wrap: wrap;
+      }
+    }
+
+    @media (max-width: 400px) {
+      .biodata-card {
+        padding: 1.2rem 0.8rem;
+        border-radius: 32px;
+      }
+      .biodata-header h1 {
+        font-size: 1.6rem;
+      }
+      .clock-date {
+        font-size: 0.7rem;
+        padding: 0.3rem 0.8rem;
+      }
+    }
+
+    /* gradient border */
+    .biodata-card {
+      position: relative;
+    }
+    .biodata-card::after {
+      content: '';
+      position: absolute;
+      inset: -2px;
+      border-radius: 50px;
+      background: linear-gradient(130deg, #dbbd94, #f2e0c0, #dbbd94);
+      z-index: -1;
+      opacity: 0.5;
+      filter: blur(4px);
+    }
+  </style>
+</head>
+<body>
+
+<div class="biodata-card">
+  <!-- top row: language switcher + back button -->
+  <div class="top-actions">
+    <div class="lang-group">
+      <button class="lang-btn active" id="langEngBtn" data-lang="en">ENGLISH</button>
+      <button class="lang-btn" id="langBmBtn" data-lang="bm">BAHASA MELAYU</button>
+    </div>
+    <a href="index.html" class="back-btn">BACK TO HOMEPAGE</a>
+  </div>
+
+  <!-- header: only "BIODATA" centered -->
+  <div class="biodata-header">
+    <h1 id="titleBiodata" data-en="✦ BIODATA ✦" data-bm="✦ BIODATA ✦">✦ BIODATA ✦</h1>
+  </div>
+
+  <!-- main grid -->
+  <div class="biodata-grid">
+    <!-- left: avatar / photo with your image -->
+    <div class="avatar-col">
+      <div class="avatar-frame">
+        <img src="ain biodata.png" alt="Nur Ain Qistina portrait" title="Nur Ain Qistina">
+      </div>
+      <div class="avatar-caption" id="avatarCaption" data-en="💫 NUR AIN QISTINA" data-bm="💫 NUR AIN QISTINA">💫 NUR AIN QISTINA</div>
+    </div>
+
+    <!-- right: biodata details -->
+    <div class="info-col">
+      <h2 id="personalTitle" data-en="📋 Personal details" data-bm="📋 Butir-butir peribadi">📋 Personal details</h2>
+
+      <div class="biodata-item">
+        <span class="biodata-label"><i>👤</i> <span id="labelFullname" data-en="Full name" data-bm="Nama penuh">Full name</span></span>
+        <span class="biodata-value highlight-name">Nur Ain Qistina Binti Zulafian</span>
+      </div>
+
+      <div class="biodata-item">
+        <span class="biodata-label"><i>🎂</i> <span id="labelDob" data-en="Date of birth" data-bm="Tarikh lahir">Date of birth</span></span>
+        <span class="biodata-value">31 December 2005</span>
+      </div>
+
+      <div class="biodata-item">
+        <span class="biodata-label"><i>🏥</i> <span id="labelPob" data-en="Place of birth" data-bm="Tempat lahir">Place of birth</span></span>
+        <span class="biodata-value">Hospital Kajang, Selangor</span>
+      </div>
+
+      <div class="biodata-item">
+        <span class="biodata-label"><i>📅</i> <span id="labelAge" data-en="Age" data-bm="Umur">Age</span></span>
+        <span class="biodata-value" id="ageValue" data-en="21 years old (as of 2026)" data-bm="21 tahun (setakat 2026)">21 years old (as of 2026)</span>
+      </div>
+
+      <div class="biodata-item">
+        <span class="biodata-label"><i>🕌</i> <span id="labelReligion" data-en="Religion" data-bm="Agama">Religion</span></span>
+        <span class="biodata-value">Islam</span>
+      </div>
+
+      <div class="biodata-item">
+        <span class="biodata-label"><i>🌏</i> <span id="labelRace" data-en="Race" data-bm="Bangsa">Race</span></span>
+        <span class="biodata-value">Malay</span>
+      </div>
+
+      <div class="biodata-item">
+        <span class="biodata-label"><i>🎨</i> <span id="labelHobby" data-en="Hobby" data-bm="Hobi">Hobby</span></span>
+        <span class="biodata-value" id="hobbyValue" data-en="Cooking &amp; Singing" data-bm="Memasak &amp; Menyanyi">Cooking &amp; Singing</span>
+      </div>
+
+      <div class="biodata-item">
+        <span class="biodata-label"><i>🚀</i> <span id="labelAmbition" data-en="Ambition" data-bm="Cita-cita">Ambition</span></span>
+        <span class="biodata-value" id="ambitionValue" data-en="Information Technology Officer" data-bm="Pegawai Teknologi Maklumat">Information Technology Officer</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- footer with clock + date -->
+  <div class="biodata-footer">
+    <span id="footerText" data-en="✦ personal biodata · digital cv ✦" data-bm="✦ biodata peribadi · cv digital ✦">✦ personal biodata · digital cv ✦</span>
+    <div class="clock-date" id="clockDateDisplay">
+      <span id="clockTime">--:--:--</span>
+      <span class="separator">|</span>
+      <span id="clockDay">---</span>
+      <span class="separator">|</span>
+      <span id="clockDate">-- --- ----</span>
+    </div>
+  </div>
+</div>
+
+<script>
+  (function() {
+    // ----- language switching -----
+    const langEngBtn = document.getElementById('langEngBtn');
+    const langBmBtn = document.getElementById('langBmBtn');
+    let currentLang = 'en';
+
+    // elements with data-en / data-bm
+    const translatableElements = document.querySelectorAll('[data-en][data-bm]');
+
+    function setLanguage(lang) {
+      currentLang = lang;
+
+      // toggle active class on buttons
+      langEngBtn.classList.toggle('active', lang === 'en');
+      langBmBtn.classList.toggle('active', lang === 'bm');
+
+      // update all translatable elements
+      translatableElements.forEach(el => {
+        const text = lang === 'en' ? el.getAttribute('data-en') : el.getAttribute('data-bm');
+        if (text !== null) {
+          el.innerText = text;
+        }
+      });
+    }
+
+    langEngBtn.addEventListener('click', () => setLanguage('en'));
+    langBmBtn.addEventListener('click', () => setLanguage('bm'));
+
+    // ----- image fallback: if 'ain biodata.png' not found, show initials avatar -----
+    const img = document.querySelector('.avatar-frame img');
+    if (img) {
+      img.onerror = function() {
+        this.onerror = null;
+        this.src = 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="200" height="200" viewBox="0 0 200 200"%3E%3Crect width="200" height="200" fill="%23dcc9ae"/%3E%3Ctext x="100" y="120" font-family="Lato, sans-serif" font-size="60" fill="%234d2e1b" text-anchor="middle" font-weight="bold" letter-spacing="3"%3EAQ%3C/text%3E%3C/svg%3E';
+      };
+    }
+
+    // default language: English
+    setLanguage('en');
+
+    // ===== CLOCK + DAY + DATE =====
+    function updateClock() {
+      const now = new Date();
+      // time
+      const h = String(now.getHours()).padStart(2, '0');
+      const m = String(now.getMinutes()).padStart(2, '0');
+      const s = String(now.getSeconds()).padStart(2, '0');
+      const timeStr = h + ':' + m + ':' + s;
+      // day
+      const days = ['SUNDAY', 'MONDAY', 'TUESDAY', 'WEDNESDAY', 'THURSDAY', 'FRIDAY', 'SATURDAY'];
+      const dayStr = days[now.getDay()];
+      // date
+      const months = ['JANUARY','FEBRUARY','MARCH','APRIL','MAY','JUNE','JULY','AUGUST','SEPTEMBER','OCTOBER','NOVEMBER','DECEMBER'];
+      const dateNum = now.getDate();
+      const monthStr = months[now.getMonth()];
+      const yearStr = now.getFullYear();
+      const dateStr = dateNum + ' ' + monthStr + ' ' + yearStr;
+
+      document.getElementById('clockTime').textContent = timeStr;
+      document.getElementById('clockDay').textContent = dayStr;
+      document.getElementById('clockDate').textContent = dateStr;
+    }
+
+    updateClock();
+    setInterval(updateClock, 1000);
+  })();
+</script>
+
+</body>
+</html>

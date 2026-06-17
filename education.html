@@ -1,0 +1,576 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+    <title>Education · Nur Ain Qistina</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,700&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Lato', 'Segoe UI', sans-serif;
+            background: #faf3e0;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem 1.5rem;
+            background: linear-gradient(145deg, #f8efe0 0%, #eaddca 100%);
+        }
+
+        /* ===== MAIN CARD WITH ENTRANCE ANIMATION ===== */
+        .education-card {
+            max-width: 1100px;
+            width: 100%;
+            background: rgba(255, 250, 240, 0.88);
+            backdrop-filter: blur(2px);
+            border-radius: 48px;
+            box-shadow: 0 25px 45px -12px rgba(80, 50, 20, 0.25),
+                        inset 0 1px 2px rgba(255, 245, 215, 0.6);
+            padding: 2.8rem 3rem;
+            border: 1px solid #eedbc0;
+            position: relative;
+
+            /* ENTRANCE ANIMATION */
+            opacity: 0;
+            transform: translateY(40px);
+            animation: fadeInUp 0.8s ease forwards;
+        }
+
+        @keyframes fadeInUp {
+            0% {
+                opacity: 0;
+                transform: translateY(40px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Staggered animations for child elements */
+        .top-actions,
+        .header-title,
+        .timeline-section,
+        .achievement-section,
+        .position-section,
+        .activity-section {
+            opacity: 0;
+            animation: fadeInUp 0.6s ease forwards;
+        }
+
+        .top-actions { animation-delay: 0.1s; }
+        .header-title { animation-delay: 0.2s; }
+        .timeline-section { animation-delay: 0.3s; }
+        .achievement-section { animation-delay: 0.4s; }
+        .position-section { animation-delay: 0.5s; }
+        .activity-section { animation-delay: 0.6s; }
+
+        /* ===== TOP ACTIONS ===== */
+        .top-actions {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .lang-group {
+            display: flex;
+            gap: 0.8rem;
+        }
+
+        .lang-btn {
+            background: #e7dbbc;
+            border: none;
+            padding: 8px 22px;
+            border-radius: 40px;
+            font-weight: bold;
+            font-size: 0.85rem;
+            cursor: pointer;
+            color: #5a3a22;
+            transition: 0.2s;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+            font-family: 'Lato', sans-serif;
+        }
+
+        .lang-btn:hover {
+            background: #ddc89b;
+            transform: scale(0.97);
+        }
+
+        .lang-btn.active {
+            background: #c9a87c;
+            color: #fff;
+            box-shadow: 0 2px 8px rgba(100, 60, 20, 0.2);
+        }
+
+        .back-btn {
+            background: #dcc29e;
+            border: none;
+            padding: 8px 24px;
+            border-radius: 40px;
+            font-weight: bold;
+            font-size: 0.85rem;
+            cursor: pointer;
+            color: #3d2a18;
+            transition: 0.2s;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            font-family: 'Lato', sans-serif;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        }
+
+        .back-btn:hover {
+            background: #c9a87c;
+            transform: scale(0.97);
+            color: #fff;
+        }
+
+        /* ===== HEADER ===== */
+        .header-title {
+            text-align: center;
+            margin-bottom: 2.5rem;
+            border-bottom: 2px dashed #dac29e;
+            padding-bottom: 1.2rem;
+        }
+
+        .header-title h1 {
+            font-family: 'Playfair Display', serif;
+            font-weight: 700;
+            font-style: italic;
+            font-size: 2.8rem;
+            letter-spacing: 0.02em;
+            color: #4d2e1b;
+            display: inline-block;
+            padding: 0 1.5rem;
+            background: linear-gradient(to right, #f7eddc, #fdf6ea);
+            border-radius: 60px;
+            box-shadow: 0 6px 16px rgba(120, 70, 30, 0.08);
+        }
+
+        /* ===== TIMELINE (Education Journey) ===== */
+        .timeline-section {
+            margin-bottom: 2.5rem;
+        }
+
+        .section-label {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.6rem;
+            color: #5a3920;
+            border-left: 6px solid #bf9a6a;
+            padding-left: 1.2rem;
+            margin-bottom: 1.2rem;
+        }
+
+        .timeline-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 1.2rem;
+        }
+
+        .timeline-item {
+            background: rgba(255, 248, 235, 0.6);
+            border-radius: 20px;
+            padding: 1.2rem 1.5rem;
+            border: 1px solid #e9d5b5;
+            transition: 0.3s ease;
+            backdrop-filter: blur(1px);
+        }
+
+        .timeline-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(100, 60, 20, 0.1);
+            background: rgba(255, 248, 235, 0.85);
+        }
+
+        .timeline-item .year {
+            font-weight: 700;
+            font-size: 1.1rem;
+            color: #8a5c32;
+            display: block;
+            margin-bottom: 0.3rem;
+        }
+
+        .timeline-item .school {
+            font-weight: 400;
+            font-size: 0.95rem;
+            color: #3d2a18;
+        }
+
+        .timeline-item .school i {
+            font-style: normal;
+            display: inline-block;
+            margin-right: 6px;
+        }
+
+        /* ===== ACHIEVEMENTS ===== */
+        .achievement-section {
+            margin-bottom: 2.5rem;
+        }
+
+        .achievement-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+        }
+
+        .achievement-item {
+            background: rgba(255, 248, 235, 0.5);
+            border-radius: 16px;
+            padding: 0.8rem 1.2rem;
+            border: 1px solid #e9d5b5;
+            transition: 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 0.95rem;
+            color: #3d2a18;
+        }
+
+        .achievement-item:hover {
+            transform: translateX(5px);
+            background: rgba(255, 248, 235, 0.85);
+            border-color: #c9a87c;
+        }
+
+        .achievement-item .badge {
+            font-size: 1.3rem;
+            flex-shrink: 0;
+        }
+
+        /* ===== POSITIONS ===== */
+        .position-section {
+            margin-bottom: 2.5rem;
+        }
+
+        .position-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 0.8rem;
+        }
+
+        .position-item {
+            background: rgba(255, 248, 235, 0.5);
+            border-radius: 14px;
+            padding: 0.7rem 1.2rem;
+            border: 1px solid #e9d5b5;
+            transition: 0.3s ease;
+            font-size: 0.95rem;
+            color: #3d2a18;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .position-item:hover {
+            transform: translateX(5px);
+            background: rgba(255, 248, 235, 0.85);
+            border-color: #c9a87c;
+        }
+
+        .position-item .icon {
+            font-size: 1.2rem;
+        }
+
+        /* ===== ACTIVITIES ===== */
+        .activity-section {
+            margin-bottom: 0.5rem;
+        }
+
+        .activity-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 0.8rem;
+        }
+
+        .activity-item {
+            background: rgba(255, 248, 235, 0.4);
+            border-radius: 14px;
+            padding: 0.6rem 1rem;
+            border: 1px solid #e9d5b5;
+            transition: 0.3s ease;
+            font-size: 0.9rem;
+            color: #3d2a18;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .activity-item:hover {
+            transform: translateX(4px);
+            background: rgba(255, 248, 235, 0.8);
+            border-color: #c9a87c;
+        }
+
+        .activity-item .emoji {
+            font-size: 1.1rem;
+        }
+
+        /* ===== FOOTER with clock & date ===== */
+        .education-footer {
+            margin-top: 2rem;
+            text-align: center;
+            font-size: 0.75rem;
+            color: #b09573;
+            letter-spacing: 1px;
+            border-top: 1px solid #e2cfb2;
+            padding-top: 1.2rem;
+            opacity: 0;
+            animation: fadeInUp 0.6s ease 0.7s forwards;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.6rem;
+        }
+
+        .clock-date {
+            display: flex;
+            justify-content: center;
+            gap: 1.8rem;
+            flex-wrap: wrap;
+            font-weight: 400;
+            font-size: 0.9rem;
+            letter-spacing: 0.4px;
+            color: #5a3f28;
+            background: #f7ecd9;
+            padding: 0.45rem 1.8rem;
+            border-radius: 60px;
+            border: 1px solid #e6d3b5;
+            box-shadow: inset 0 1px 6px rgba(0,0,0,0.04);
+        }
+
+        .clock-date span {
+            padding: 0 4px;
+        }
+
+        .clock-date .separator {
+            opacity: 0.3;
+        }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 650px) {
+            .education-card {
+                padding: 1.8rem 1.2rem;
+            }
+            .header-title h1 {
+                font-size: 2rem;
+                padding: 0 1rem;
+            }
+            .top-actions {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            .lang-group {
+                justify-content: center;
+            }
+            .back-btn {
+                justify-content: center;
+            }
+            .timeline-grid {
+                grid-template-columns: 1fr;
+            }
+            .achievement-grid {
+                grid-template-columns: 1fr;
+            }
+            .position-list {
+                grid-template-columns: 1fr;
+            }
+            .activity-grid {
+                grid-template-columns: 1fr;
+            }
+            .section-label {
+                font-size: 1.3rem;
+            }
+            .clock-date {
+                font-size: 0.75rem;
+                padding: 0.35rem 1rem;
+                gap: 0.6rem;
+                flex-wrap: wrap;
+            }
+        }
+
+        @media (max-width: 400px) {
+            .education-card {
+                padding: 1.2rem 0.8rem;
+                border-radius: 32px;
+            }
+            .header-title h1 {
+                font-size: 1.6rem;
+            }
+            .clock-date {
+                font-size: 0.7rem;
+                padding: 0.3rem 0.8rem;
+            }
+        }
+
+        /* Gradient border */
+        .education-card {
+            position: relative;
+        }
+        .education-card::after {
+            content: '';
+            position: absolute;
+            inset: -2px;
+            border-radius: 50px;
+            background: linear-gradient(130deg, #dbbd94, #f2e0c0, #dbbd94);
+            z-index: -1;
+            opacity: 0.5;
+            filter: blur(4px);
+        }
+    </style>
+</head>
+<body>
+
+<div class="education-card">
+    <!-- TOP ROW -->
+    <div class="top-actions">
+        <div class="lang-group">
+            <button class="lang-btn active" id="langEngBtn">ENGLISH</button>
+            <button class="lang-btn" id="langBmBtn">BAHASA MELAYU</button>
+        </div>
+        <a href="index.html" class="back-btn" id="backHome" data-en=" BACK TO HOMEPAGE" data-bm="🏠 KEMBALI KE LAMAN UTAMA">🏠 BACK TO HOMEPAGE</a>
+    </div>
+
+    <!-- HEADER -->
+    <div class="header-title">
+        <h1 id="titleEducation" data-en="📚 MY EDUCATION" data-bm="📚 PENDIDIKAN SAYA">📚 MY EDUCATION</h1>
+    </div>
+
+    <!-- ===== TIMELINE ===== -->
+    <div class="timeline-section">
+        <h2 class="section-label" id="labelTimeline" data-en="🎓 Education Journey" data-bm="🎓 Perjalanan Pendidikan">🎓 Education Journey</h2>
+        <div class="timeline-grid">
+            <div class="timeline-item">
+                <span class="year">2012 – 2017</span>
+                <span class="school" id="school1" data-en="🏫 Kiaramas Primary School" data-bm="🏫 Sekolah Kebangsaan Kiaramas">🏫 Kiaramas Primary School</span>
+            </div>
+            <div class="timeline-item">
+                <span class="year">2018 – 2023</span>
+                <span class="school" id="school2" data-en="🏫 Kiaramas High School" data-bm="🏫 Sekolah Menengah Kebangsaan Kiaramas">🏫 Kiaramas High School</span>
+            </div>
+            <div class="timeline-item">
+                <span class="year">2024 – Present</span>
+                <span class="school" id="school3" data-en="🎓 Universiti Teknologi MARA (UiTM)" data-bm="🎓 Universiti Teknologi MARA (UiTM)">🎓 Universiti Teknologi MARA (UiTM)</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===== ACHIEVEMENTS ===== -->
+    <div class="achievement-section">
+        <h2 class="section-label" id="labelAchievement" data-en="🏆 Academic Achievements" data-bm="🏆 Pencapaian Akademik">🏆 Academic Achievements</h2>
+        <div class="achievement-grid">
+            <div class="achievement-item"><span class="badge">📝</span> <span id="ach1" data-en="UPSR: 2A 3C 1D" data-bm="UPSR: 2A 3C 1D">UPSR: 2A 3C 1D</span></div>
+            <div class="achievement-item"><span class="badge">📝</span> <span id="ach2" data-en="SPM: 3A 1B+ 2C 2D" data-bm="SPM: 3A 1B+ 2C 2D">SPM: 3A 1B+ 2C 2D</span></div>
+            <div class="achievement-item"><span class="badge">🥉</span> <span id="ach3" data-en="Academic Achievement Award (Third Place)" data-bm="Anugerah Pencapaian Akademik (Tempat Ketiga)">Academic Achievement Award (Third Place)</span></div>
+            <div class="achievement-item"><span class="badge">🥈</span> <span id="ach4" data-en="Academic Achievement Award (Second Place)" data-bm="Anugerah Pencapaian Akademik (Tempat Kedua)">Academic Achievement Award (Second Place)</span></div>
+            <div class="achievement-item"><span class="badge">📖</span> <span id="ach5" data-en="Nilam Award (Most Book Readers)" data-bm="Anugerah Nilam (Pembaca Buku Terbanyak)">Nilam Award (Most Book Readers)</span></div>
+            <div class="achievement-item"><span class="badge">📈</span> <span id="ach6" data-en="Performance Improvement Award" data-bm="Anugerah Peningkatan Prestasi">Performance Improvement Award</span></div>
+            <div class="achievement-item"><span class="badge">🏅</span> <span id="ach7" data-en="Winners of The PartyRock AI Competition (Second Place)" data-bm="Pemenang Pertandingan PartyRock AI (Tempat Kedua)">Winners of The PartyRock AI Competition (Second Place)</span></div>
+            <div class="achievement-item"><span class="badge">🏅</span> <span id="ach8" data-en="V-Precommath 2024: The Power of Mathematics in Business Applications (Third Place)" data-bm="V-Precommath 2024: Kuasa Matematik dalam Aplikasi Perniagaan (Tempat Ketiga)">V-Precommath 2024: The Power of Mathematics in Business Applications (Third Place)</span></div>
+        </div>
+    </div>
+
+    <!-- ===== POSITIONS ===== -->
+    <div class="position-section">
+        <h2 class="section-label" id="labelPosition" data-en="💼 Positions Held" data-bm="💼 Jawatan Disandang">💼 Positions Held</h2>
+        <div class="position-list">
+            <div class="position-item"><span class="icon">📚</span> <span id="pos1" data-en="School Resource Center Supervisor" data-bm="Pengawas Pusat Sumber Sekolah">School Resource Center Supervisor</span></div>
+            <div class="position-item"><span class="icon">🗣️</span> <span id="pos2" data-en="English Language Association Committee Member" data-bm="Ahli Jawatankuasa Persatuan Bahasa Inggeris">English Language Association Committee Member</span></div>
+            <div class="position-item"><span class="icon">🏐</span> <span id="pos3" data-en="Netball Club Treasurer" data-bm="Bendahari Kelab Bola Jaring">Netball Club Treasurer</span></div>
+            <div class="position-item"><span class="icon">📖</span> <span id="pos4" data-en="Malay Language Association Treasurer" data-bm="Bendahari Persatuan Bahasa Melayu">Malay Language Association Treasurer</span></div>
+        </div>
+    </div>
+
+    <!-- ===== ACTIVITIES ===== -->
+    <div class="activity-section">
+        <h2 class="section-label" id="labelActivity" data-en="🎯 Activities &amp; Involvement" data-bm="🎯 Aktiviti &amp; Penglibatan">🎯 Activities &amp; Involvement</h2>
+        <div class="activity-grid">
+            <div class="activity-item"><span class="emoji">🏃</span> <span id="act1" data-en="Sports House Foot Parade Participant" data-bm="Peserta Kawad Kaki Rumah Sukan">Sports House Foot Parade Participant</span></div>
+            <div class="activity-item"><span class="emoji">💪</span> <span id="act2" data-en="Shot Put Participant" data-bm="Peserta Lontar Peluru">Shot Put Participant</span></div>
+            <div class="activity-item"><span class="emoji">🏆</span> <span id="act3" data-en="Female Tug of War Participant (Champion)" data-bm="Peserta Tarik Tali Perempuan (Johan)">Female Tug of War Participant (Champion)</span></div>
+            <div class="activity-item"><span class="emoji">🛡️</span> <span id="act4" data-en="CGCT Webinar Introduction to Cyber Incident Participant" data-bm="Peserta Webinar CGCT Pengenalan kepada Insiden Siber">CGCT Webinar Introduction to Cyber Incident Participant</span></div>
+            <div class="activity-item"><span class="emoji">🔐</span> <span id="act5" data-en="Jobsafe: Cyber Security For Today's Job Seekers Participant" data-bm="Peserta Jobsafe: Keselamatan Siber Untuk Pencari Kerja Hari Ini">Jobsafe: Cyber Security For Today's Job Seekers Participant</span></div>
+            <div class="activity-item"><span class="emoji">🤝</span> <span id="act6" data-en="Prosperous Madani Youth Without Drugs Program Participant" data-bm="Peserta Program Belia Madani Sejahtera Tanpa Dadah">Prosperous Madani Youth Without Drugs Program Participant</span></div>
+            <div class="activity-item"><span class="emoji">📚</span> <span id="act7" data-en="Information Literacy Briefing Participant" data-bm="Peserta Taklimat Literasi Maklumat">Information Literacy Briefing Participant</span></div>
+            <div class="activity-item"><span class="emoji">🤖</span> <span id="act8" data-en="AWS Cendekiawan Malaysia PartyRock Competition Participant" data-bm="Peserta Pertandingan PartyRock AWS Cendekiawan Malaysia">AWS Cendekiawan Malaysia PartyRock Competition Participant</span></div>
+            <div class="activity-item"><span class="emoji">🌙</span> <span id="act9" data-en="Noble Values Instillation Program in Conjunction with Ihya Ramadhan Participant" data-bm="Peserta Program Penerapan Nilai-Nilai Murni Sempena Ihya Ramadhan">Noble Values Instillation Program in Conjunction with Ihya Ramadhan Participant</span></div>
+        </div>
+    </div>
+
+    <!-- FOOTER with clock & date -->
+    <div class="education-footer">
+        <span id="footerText" data-en="✦ education · digital cv ✦" data-bm="✦ pendidikan · cv digital ✦">✦ education · digital cv ✦</span>
+        <div class="clock-date" id="clockDateDisplay">
+            <span id="clockTime">--:--:--</span>
+            <span class="separator">|</span>
+            <span id="clockDay">---</span>
+            <span class="separator">|</span>
+            <span id="clockDate">-- --- ----</span>
+        </div>
+    </div>
+</div>
+
+<script>
+    // ===== LANGUAGE SWITCHING =====
+    const langEngBtn = document.getElementById('langEngBtn');
+    const langBmBtn = document.getElementById('langBmBtn');
+    const translatableElements = document.querySelectorAll('[data-en][data-bm]');
+
+    function setLanguage(lang) {
+        langEngBtn.classList.toggle('active', lang === 'en');
+        langBmBtn.classList.toggle('active', lang === 'bm');
+
+        translatableElements.forEach(el => {
+            const text = lang === 'en' ? el.getAttribute('data-en') : el.getAttribute('data-bm');
+            if (text !== null) {
+                el.innerText = text;
+            }
+        });
+    }
+
+    langEngBtn.addEventListener('click', () => setLanguage('en'));
+    langBmBtn.addEventListener('click', () => setLanguage('bm'));
+
+    // Default: English
+    setLanguage('en');
+
+    // ===== CLOCK + DAY + DATE =====
+    function updateClock() {
+        const now = new Date();
+        const h = String(now.getHours()).padStart(2, '0');
+        const m = String(now.getMinutes()).padStart(2, '0');
+        const s = String(now.getSeconds()).padStart(2, '0');
+        const timeStr = h + ':' + m + ':' + s;
+
+        const days = ['SUNDAY', 'MONDAY', 'TUESDAY', 'WEDNESDAY', 'THURSDAY', 'FRIDAY', 'SATURDAY'];
+        const dayStr = days[now.getDay()];
+
+        const months = ['JANUARY','FEBRUARY','MARCH','APRIL','MAY','JUNE','JULY','AUGUST','SEPTEMBER','OCTOBER','NOVEMBER','DECEMBER'];
+        const dateNum = now.getDate();
+        const monthStr = months[now.getMonth()];
+        const yearStr = now.getFullYear();
+        const dateStr = dateNum + ' ' + monthStr + ' ' + yearStr;
+
+        document.getElementById('clockTime').textContent = timeStr;
+        document.getElementById('clockDay').textContent = dayStr;
+        document.getElementById('clockDate').textContent = dateStr;
+    }
+
+    updateClock();
+    setInterval(updateClock, 1000);
+</script>
+
+</body>
+</html>
